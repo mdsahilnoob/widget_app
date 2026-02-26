@@ -2,8 +2,8 @@ Categories:
   - Productivity
 License: GPL-3.0-only
 AuthorName: widget_app contributors
-SourceCode: https://github.com/YOUR_USERNAME/widget_app
-IssueTracker: https://github.com/YOUR_USERNAME/widget_app/issues
+SourceCode: https://github.com/mdsahilnoob/widget_app
+IssueTracker: https://github.com/mdsahilnoob/widget_app/issues
 
 AutoName: Widget App
 
