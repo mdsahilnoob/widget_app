@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AppWidgetProviderInfo for the Nothing OS inspired home screen widget.
+
+    targetCellWidth/Height (Android 12+) and minWidth/minHeight (older):
+      2 × 1 grid cells  ≈  180 dp × 90 dp on a standard launcher grid.
+
+    updatePeriodMillis = 0  →  the OS never polls; Flutter pushes updates via
+    HomeWidget.updateWidget() (battery-friendly).
+-->
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="180dp"
+    android:minHeight="90dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/nothing_widget_layout"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen"
+    android:description="@string/widget_description" />

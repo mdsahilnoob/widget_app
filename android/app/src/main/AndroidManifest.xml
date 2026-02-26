@@ -30,6 +30,34 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!--
+            Nothing OS home screen widget provider.
+
+            Data flow (Flutter → widget):
+              1.  Flutter calls HomeWidget.saveWidgetData() → SharedPreferences.
+              2.  Flutter calls HomeWidget.updateWidget()   → triggers onUpdate().
+              3.  NothingWidgetProvider.onUpdate() reads prefs via
+                  HomeWidgetPlugin.getData() and applies them to RemoteViews.
+
+            Data flow (widget → Flutter, background):
+              1.  User taps the "+" button.
+              2.  HomeWidgetBackgroundIntent fires a broadcast.
+              3.  home_widget wakes a background Dart isolate and calls
+                  widgetBackgroundCallback() defined in home_widget_service.dart.
+        -->
+        <receiver
+            android:name=".NothingWidgetProvider"
+            android:exported="true"
+            android:label="Widget App">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/nothing_widget_info" />
+        </receiver>
+
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

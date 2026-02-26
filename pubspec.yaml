@@ -41,6 +41,9 @@ dependencies:
   # Local storage
   shared_preferences: ^2.3.3
 
+  # Android / iOS Home Screen widget bridge
+  home_widget: ^0.9.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

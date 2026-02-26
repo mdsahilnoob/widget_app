@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/providers/settings_provider.dart';
+import 'core/providers/widget_data_provider.dart';
+import 'core/services/home_widget_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/home/home_screen.dart';
 import 'features/widgets/widgets_screen.dart';
@@ -10,9 +14,12 @@ import 'features/widgets/widgets_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialise SharedPreferences once and inject it into Riverpod so every
-  // provider that needs persistence receives the same instance.
+  // Initialise SharedPreferences once and inject it into Riverpod.
   final prefs = await SharedPreferences.getInstance();
+
+  // Initialise the home_widget platform channel and register the
+  // Dart-side background callback.
+  await HomeWidgetService.initialize();
 
   runApp(
     ProviderScope(
@@ -24,21 +31,58 @@ Future<void> main() async {
 
 // ── Root application widget ───────────────────────────────────────────────────
 
-/// [WidgetApp] is a [ConsumerWidget] so it can watch [settingsProvider]
-/// and rebuild when the theme mode changes at runtime.
-class WidgetApp extends ConsumerWidget {
+/// [WidgetApp] watches [settingsProvider] for theme changes and
+/// [widgetDataProvider] to forward foreground widget-click events.
+class WidgetApp extends ConsumerStatefulWidget {
   const WidgetApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Re-render when dark-mode preference changes.
-    final isDark = ref.watch(settingsProvider.select((s) => s.isDarkMode));
+  ConsumerState<WidgetApp> createState() => _WidgetAppState();
+}
 
+class _WidgetAppState extends ConsumerState<WidgetApp> {
+  StreamSubscription<Uri?>? _widgetClickSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _listenToWidgetClicks();
+    _handleLaunchFromWidget();
+  }
+
+  /// Forwards foreground widget-tap URIs to [widgetDataProvider] so the
+  /// app can react (e.g. navigate or refresh data).
+  void _listenToWidgetClicks() {
+    _widgetClickSub = HomeWidgetService.widgetClicked.listen((uri) {
+      if (uri == null) return;
+      debugPrint('[HomeWidget] foreground click: $uri');
+      if (uri.host == 'increment_counter') {
+        ref.read(widgetDataProvider.notifier).incrementCounter();
+      }
+    });
+  }
+
+  /// When the app was cold-started via a widget tap, process the launch URI.
+  Future<void> _handleLaunchFromWidget() async {
+    final uri = await HomeWidgetService.initialUri;
+    if (uri != null) {
+      debugPrint('[HomeWidget] launched from widget: $uri');
+    }
+  }
+
+  @override
+  void dispose() {
+    _widgetClickSub?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = ref.watch(settingsProvider.select((s) => s.isDarkMode));
     return MaterialApp(
       title: 'Widget App',
       debugShowCheckedModeBanner: false,
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
-      // Nothing OS is dark-only; light theme falls back to the same theme.
       theme: AppTheme.darkTheme,
       darkTheme: AppTheme.darkTheme,
       home: const _AppShell(),

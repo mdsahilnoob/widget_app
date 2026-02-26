@@ -61,4 +61,26 @@ abstract class AppConstants {
   static const String prefKeyThemeMode = 'theme_mode';
   static const String prefKeyOnboardingDone = 'onboarding_done';
   static const String prefKeyWidgetLayout = 'widget_layout';
+
+  // ── Home Widget — SharedPrefs keys (read by the Android AppWidgetProvider) ──
+  /// The headline text shown on the home screen widget.
+  static const String widgetKeyTitle = 'widget_title';
+
+  /// The secondary / caption line shown on the home screen widget.
+  static const String widgetKeySubtitle = 'widget_subtitle';
+
+  /// A counter value displayed on the home screen widget.
+  static const String widgetKeyCounter = 'widget_counter';
+
+  // ── Home Widget — Android class / iOS kind names ───────────────────────────
+  /// Android AppWidgetProvider class name (unqualified, as registered in the
+  /// manifest).
+  static const String androidWidgetName = 'NothingWidgetProvider';
+
+  /// iOS widget kind string (matches the SwiftUI WidgetKit `kind`).
+  static const String iosWidgetName = 'NothingWidget';
+
+  // ── Home Widget — deep-link URI hosts (used by background callback) ────────
+  static const String widgetUriHostTap = 'tap_widget';
+  static const String widgetUriHostIncrement = 'increment_counter';
 }
