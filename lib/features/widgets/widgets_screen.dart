@@ -2,7 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/providers/settings_provider.dart';
+import 'nothing_clock_card.dart';
+import 'nothing_battery_card.dart';
+import 'nothing_quick_note_card.dart';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Widgets Screen — V1 Widget Library
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Houses the V1 Nothing OS widget library:
+///   1. Digital Clock     — dot-matrix, second-accurate, blinking colon
+///   2. Battery Level     — custom segmented painter + dot-matrix readout
+///   3. Quick Note        — editable, persisted, synced to home screen widget
+///
+/// The layout toggle (grid ↔ list) switches between two layout modes:
+///   • Grid  — 2-column grid with compact square preview tiles.
+///   • List  — full-width stacked cards showing full widget detail.
 class WidgetsScreen extends ConsumerWidget {
   const WidgetsScreen({super.key});
 
@@ -11,176 +26,278 @@ class WidgetsScreen extends ConsumerWidget {
     final layout = ref.watch(settingsProvider.select((s) => s.widgetLayout));
     final textTheme = Theme.of(context).textTheme;
 
-    // Placeholder widget data — replace with real models later.
-    final widgets = List.generate(
-      12,
-      (i) => _WidgetItem(
-        id: i,
-        name: 'WIDGET ${(i + 1).toString().padLeft(2, '0')}',
-        category: i.isEven ? 'SYSTEM' : 'MEDIA',
-      ),
-    );
-
     return Scaffold(
       backgroundColor: AppConstants.black,
-      appBar: AppBar(title: Text('WIDGETS', style: textTheme.titleSmall)),
-      body: Padding(
-        padding: const EdgeInsets.all(AppConstants.spaceMD),
-        child: layout == WidgetLayout.grid
-            ? _GridLayout(widgets: widgets)
-            : _ListLayout(widgets: widgets),
+      appBar: AppBar(
+        title: Text('WIDGETS', style: textTheme.titleSmall),
+        actions: [
+          // Layout mode indicator badge
+          Padding(
+            padding: const EdgeInsets.only(right: AppConstants.spaceMD),
+            child: _LayoutBadge(layout: layout),
+          ),
+        ],
       ),
+      body: layout == WidgetLayout.grid
+          ? _GridView(textTheme: textTheme)
+          : _ListView(textTheme: textTheme),
     );
   }
 }
 
-// ── Layout variants ───────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// List layout — full detail cards stacked vertically
+// ─────────────────────────────────────────────────────────────────────────────
 
-class _GridLayout extends StatelessWidget {
-  const _GridLayout({required this.widgets});
-  final List<_WidgetItem> widgets;
+class _ListView extends StatelessWidget {
+  const _ListView({required this.textTheme});
+  final TextTheme textTheme;
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: AppConstants.spaceSM,
-        crossAxisSpacing: AppConstants.spaceSM,
-        childAspectRatio: 1.0,
-      ),
-      itemCount: widgets.length,
-      itemBuilder: (_, i) => _WidgetCard(item: widgets[i]),
+    return ListView(
+      padding: const EdgeInsets.all(AppConstants.spaceMD),
+      children: [
+        _SectionHeader(label: 'V1  •  NOTHING UI', textTheme: textTheme),
+        const SizedBox(height: AppConstants.spaceMD),
+
+        // ── 1. Digital Clock ───────────────────────────────────────────────
+        const NothingClockCard(),
+        const SizedBox(height: AppConstants.spaceMD),
+
+        // ── 2. Battery Level ───────────────────────────────────────────────
+        const NothingBatteryCard(),
+        const SizedBox(height: AppConstants.spaceMD),
+
+        // ── 3. Quick Note ──────────────────────────────────────────────────
+        const NothingQuickNoteCard(),
+        const SizedBox(height: AppConstants.spaceLG),
+
+        // ── Coming soon footer ─────────────────────────────────────────────
+        _ComingSoonFooter(textTheme: textTheme),
+        const SizedBox(height: AppConstants.spaceMD),
+      ],
     );
   }
 }
 
-class _ListLayout extends StatelessWidget {
-  const _ListLayout({required this.widgets});
-  final List<_WidgetItem> widgets;
+// ─────────────────────────────────────────────────────────────────────────────
+// Grid layout — compact 2-column preview tiles
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _GridView extends StatelessWidget {
+  const _GridView({required this.textTheme});
+  final TextTheme textTheme;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: widgets.length,
-      separatorBuilder: (context, _) =>
-          const SizedBox(height: AppConstants.spaceSM),
-      itemBuilder: (_, i) => _WidgetListTile(item: widgets[i]),
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.all(AppConstants.spaceMD),
+          sliver: SliverToBoxAdapter(
+            child: _SectionHeader(
+              label: 'V1  •  NOTHING UI',
+              textTheme: textTheme,
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppConstants.spaceMD),
+          sliver: SliverGrid(
+            delegate: SliverChildListDelegate([
+              // Clock tile spans full width (2 columns).
+              const _GridTile(
+                tag: 'CLOCK',
+                icon: Icons.access_time_rounded,
+                description: 'Dot-matrix digital clock with blinking colon.',
+              ),
+              const _GridTile(
+                tag: 'BATTERY',
+                icon: Icons.battery_charging_full_rounded,
+                description: 'Segmented battery level indicator.',
+              ),
+              const _GridTile(
+                tag: 'QUICK NOTE',
+                icon: Icons.sticky_note_2_outlined,
+                description: 'Editable note synced to home screen widget.',
+              ),
+              const _GridTile(
+                tag: 'COMING SOON',
+                icon: Icons.add_circle_outline_rounded,
+                description: 'More widgets in V2.',
+                dimmed: true,
+              ),
+            ]),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: AppConstants.spaceSM,
+              crossAxisSpacing: AppConstants.spaceSM,
+              childAspectRatio: 1.0,
+            ),
+          ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: AppConstants.spaceLG)),
+      ],
     );
   }
 }
 
-// ── Widget card (grid) ────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Shared sub-widgets
+// ─────────────────────────────────────────────────────────────────────────────
 
-class _WidgetCard extends StatelessWidget {
-  const _WidgetCard({required this.item});
-  final _WidgetItem item;
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.label, required this.textTheme});
+  final String label;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(label, style: textTheme.titleSmall),
+        const SizedBox(width: AppConstants.spaceSM),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.spaceSM,
+            vertical: AppConstants.spaceXS,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppConstants.borderGreyLight,
+              width: AppConstants.borderThin,
+            ),
+            borderRadius: BorderRadius.circular(AppConstants.radiusSM),
+          ),
+          child: Text('3 WIDGETS', style: textTheme.labelSmall),
+        ),
+      ],
+    );
+  }
+}
+
+class _GridTile extends StatelessWidget {
+  const _GridTile({
+    required this.tag,
+    required this.icon,
+    required this.description,
+    this.dimmed = false,
+  });
+
+  final String tag;
+  final IconData icon;
+  final String description;
+  final bool dimmed;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final iconColor = dimmed ? AppConstants.whiteSubtle : AppConstants.white;
+
     return Container(
       padding: const EdgeInsets.all(AppConstants.spaceMD),
       decoration: BoxDecoration(
         color: AppConstants.surfaceDark,
         borderRadius: BorderRadius.circular(AppConstants.radiusMD),
         border: Border.all(
-          color: AppConstants.borderGrey,
+          color: dimmed
+              ? AppConstants.borderGrey
+              : AppConstants.borderGreyLight,
           width: AppConstants.borderNormal,
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Category badge
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.spaceSM,
-              vertical: AppConstants.spaceXS,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppConstants.borderGreyLight,
-                width: AppConstants.borderThin,
-              ),
-              borderRadius: BorderRadius.circular(AppConstants.radiusSM),
-            ),
-            child: Text(item.category, style: textTheme.labelSmall),
-          ),
+          Icon(icon, color: iconColor, size: 22),
           const Spacer(),
-          Text(item.name, style: textTheme.titleSmall),
+          Text(
+            tag,
+            style: textTheme.titleSmall?.copyWith(
+              color: dimmed ? AppConstants.whiteSubtle : null,
+            ),
+          ),
           const SizedBox(height: AppConstants.spaceXS),
-          Text('Tap to configure', style: textTheme.bodySmall),
+          Text(
+            description,
+            style: textTheme.bodySmall,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );
   }
 }
 
-// ── Widget list tile ──────────────────────────────────────────────────────────
-
-class _WidgetListTile extends StatelessWidget {
-  const _WidgetListTile({required this.item});
-  final _WidgetItem item;
+class _ComingSoonFooter extends StatelessWidget {
+  const _ComingSoonFooter({required this.textTheme});
+  final TextTheme textTheme;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppConstants.spaceMD,
-        vertical: AppConstants.spaceMD,
-      ),
+      padding: const EdgeInsets.all(AppConstants.spaceMD),
       decoration: BoxDecoration(
-        color: AppConstants.surfaceDark,
-        borderRadius: BorderRadius.circular(AppConstants.radiusMD),
         border: Border.all(
           color: AppConstants.borderGrey,
-          width: AppConstants.borderNormal,
+          width: AppConstants.borderThin,
         ),
+        borderRadius: BorderRadius.circular(AppConstants.radiusMD),
       ),
       child: Row(
         children: [
-          // Leading dot — Nothing OS signature detail
-          Container(
-            width: 8,
-            height: 8,
-            decoration: const BoxDecoration(
-              color: AppConstants.white,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: AppConstants.spaceMD),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(item.name, style: textTheme.bodyLarge),
-                const SizedBox(height: 2),
-                Text(item.category, style: textTheme.labelSmall),
-              ],
-            ),
-          ),
           const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 14,
+            Icons.more_horiz_rounded,
             color: AppConstants.whiteSubtle,
+            size: 16,
           ),
+          const SizedBox(width: AppConstants.spaceSM),
+          Text('V2: One UI + iOS style widgets', style: textTheme.bodySmall),
         ],
       ),
     );
   }
 }
 
-// ── Data model ────────────────────────────────────────────────────────────────
+class _LayoutBadge extends StatelessWidget {
+  const _LayoutBadge({required this.layout});
+  final WidgetLayout layout;
 
-class _WidgetItem {
-  const _WidgetItem({
-    required this.id,
-    required this.name,
-    required this.category,
-  });
-  final int id;
-  final String name;
-  final String category;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppConstants.spaceSM,
+        vertical: AppConstants.spaceXS,
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppConstants.borderGrey,
+          width: AppConstants.borderThin,
+        ),
+        borderRadius: BorderRadius.circular(AppConstants.radiusSM),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            layout == WidgetLayout.grid
+                ? Icons.grid_view_rounded
+                : Icons.view_list_rounded,
+            size: 12,
+            color: AppConstants.whiteSubtle,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            layout == WidgetLayout.grid ? 'GRID' : 'LIST',
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: AppConstants.whiteSubtle),
+          ),
+        ],
+      ),
+    );
+  }
 }

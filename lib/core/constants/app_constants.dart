@@ -62,6 +62,16 @@ abstract class AppConstants {
   static const String prefKeyOnboardingDone = 'onboarding_done';
   static const String prefKeyWidgetLayout = 'widget_layout';
 
+  // ── Widget Library — SharedPrefs Keys ─────────────────────────────────────
+  /// Battery level (0–100, int). Simulated in V1; swap for battery_plus in V2.
+  static const String prefKeyBatteryLevel = 'battery_level';
+
+  /// Whether the simulated battery is in charging state (bool).
+  static const String prefKeyBatteryCharging = 'battery_charging';
+
+  /// Quick Note text (String) displayed on the note widget + home screen widget.
+  static const String prefKeyQuickNote = 'quick_note';
+
   // ── Home Widget — SharedPrefs keys (read by the Android AppWidgetProvider) ──
   /// The headline text shown on the home screen widget.
   static const String widgetKeyTitle = 'widget_title';
