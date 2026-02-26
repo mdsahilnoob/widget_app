@@ -1,0 +1,50 @@
+Categories:
+  - Productivity
+License: GPL-3.0-only
+AuthorName: widget_app contributors
+SourceCode: https://github.com/YOUR_USERNAME/widget_app
+IssueTracker: https://github.com/YOUR_USERNAME/widget_app/issues
+
+AutoName: Widget App
+
+Summary: Nothing OS-style home screen widget manager
+Description: |-
+    Widget App is a local-first Android home screen widget manager
+    built with Flutter, inspired by the Nothing OS design language.
+
+    Features:
+    * Digital dot-matrix clock widget
+    * Battery level indicator with custom painter
+    * Quick note widget — edit text and push it to your home screen
+    * Widget Bridge: control title, subtitle and counter on the home
+      screen widget directly from within the app
+    * Bidirectional counter: tap + on the home screen widget to
+      increment it without opening the app
+    * Pure black Nothing OS theme — zero elevation, 1 dp borders
+    * Riverpod state management, SharedPreferences persistence
+    * No trackers, no analytics, no remote servers
+
+    100% open source under GPLv3.
+
+RepoType: git
+Repo: https://github.com/YOUR_USERNAME/widget_app
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: .
+    gradle:
+      - yes
+    output: build/app/outputs/flutter-apk/app-release.apk
+    prebuild:
+      - flutter pub get
+    build:
+      - flutter build apk --release
+        --build-name=$$VERSION$$
+        --build-number=$$VERCODE$$
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1

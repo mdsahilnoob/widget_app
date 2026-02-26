@@ -1,0 +1,1 @@
+Widget App — Nothing OS-style home screen widget manager for Android.
