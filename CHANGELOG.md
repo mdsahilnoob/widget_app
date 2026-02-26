@@ -1,5 +1,23 @@
 ## [Unreleased]
 
+## [1.0.3] - 2026-02-27
+
+### Fixed
+
+- GitHub Actions: add `permissions: contents: write` to unblock release uploads (403 error)
+
+## [1.0.2] - 2026-02-27
+
+### Fixed
+
+- GitHub Actions: disable Flutter analytics before `pub get` to suppress interactive EULA banner in CI
+
+## [1.0.1] - 2026-02-27
+
+### Fixed
+
+- GitHub Actions: bump Flutter version from `3.29.0` to `3.41.2` so Dart SDK satisfies `sdk: ^3.11.0`
+
 ## [1.0.0] - 2026-02-27
 
 ### Added

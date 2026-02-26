@@ -98,23 +98,38 @@ jobs:
                   sha256sum widget_app-${{ steps.version.outputs.name }}.apk \
                     > widget_app-${{ steps.version.outputs.name }}.apk.sha256
 
-            # ── 12. Upload to GitHub Releases ───────────────────────────────────────
+            # ── 12. Extract release notes from CHANGELOG.md ─────────────────────────
+            - name: Extract changelog for this version
+              id: changelog
+              run: |
+                  VERSION="${{ steps.version.outputs.name }}"
+                  # Pull the block between ## [x.y.z] and the next ## heading
+                  awk "/^## \[$VERSION\]/{found=1; next} found && /^## /{exit} found{print}" CHANGELOG.md \
+                    > release_notes.md
+                  # If the version block was empty / not found, use a fallback
+                  if [ ! -s release_notes.md ]; then
+                    echo "See [CHANGELOG.md](CHANGELOG.md) for details." > release_notes.md
+                  fi
+                  # Append install + verify instructions
+                  cat >> release_notes.md <<'EOF'
+
+                  ---
+                  ### Install
+                  Download `widget_app-${{ steps.version.outputs.name }}.apk` and sideload it,
+                  or wait for the F-Droid index to refresh.
+
+                  ### Verify
+                  ```
+                  sha256sum -c widget_app-${{ steps.version.outputs.name }}.apk.sha256
+                  ```
+                  EOF
+
+            # ── 13. Upload to GitHub Releases ───────────────────────────────────────
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
                   name: "Widget App ${{ steps.version.outputs.name }}"
-                  body: |
-                      ## What's new
-                      <!-- Add release notes here or automate with a CHANGELOG -->
-
-                      ### Install
-                      Download `widget_app-${{ steps.version.outputs.name }}.apk` and
-                      sideload it, or wait for the F-Droid index to refresh.
-
-                      ### Verify
-                      ```
-                      sha256sum -c widget_app-${{ steps.version.outputs.name }}.apk.sha256
-                      ```
+                  body_path: release_notes.md
                   files: |
                       widget_app-${{ steps.version.outputs.name }}.apk
                       widget_app-${{ steps.version.outputs.name }}.apk.sha256
