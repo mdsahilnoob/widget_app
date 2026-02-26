@@ -37,20 +37,24 @@ jobs:
             - name: Set up Flutter
               uses: subosito/flutter-action@v2
               with:
-                  flutter-version: "3.29.0" # pin to your SDK version
+                  flutter-version: "3.41.2" # Dart 3.11+ — matches pubspec sdk: ^3.11.0
                   channel: stable
                   cache: true
 
-            # ── 4. Pub dependencies ──────────────────────────────────────────────────
+            # ── 4. Disable Flutter analytics (avoids interactive EULA banner in CI) ──
+            - name: Disable Flutter analytics
+              run: flutter config --no-analytics
+
+            # ── 5. Pub dependencies ──────────────────────────────────────────────────
             - name: Install dependencies
               run: flutter pub get
 
-            # ── 5. Decode keystore from secret ───────────────────────────────────────
+            # ── 6. Decode keystore from secret ───────────────────────────────────────
             - name: Decode keystore
               run: |
                   echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.jks
 
-            # ── 6. Write key.properties ──────────────────────────────────────────────
+            # ── 7. Write key.properties ──────────────────────────────────────────────
             - name: Write key.properties
               run: |
                   cat > android/key.properties <<EOF
@@ -60,7 +64,7 @@ jobs:
                   storeFile=release.jks
                   EOF
 
-            # ── 7. Derive version from tag (strip leading 'v') ───────────────────────
+            # ── 8. Derive version from tag (strip leading 'v') ───────────────────────
             - name: Parse version from tag
               id: version
               run: |
@@ -71,26 +75,26 @@ jobs:
                   echo "name=$NAME"   >> "$GITHUB_OUTPUT"
                   echo "build=$BUILD" >> "$GITHUB_OUTPUT"
 
-            # ── 8. Build signed release APK ──────────────────────────────────────────
+            # ── 9. Build signed release APK ──────────────────────────────────────────
             - name: Build release APK
               run: |
                   flutter build apk --release \
                     --build-name="${{ steps.version.outputs.name }}" \
                     --build-number="${{ steps.version.outputs.build }}"
 
-            # ── 9. Rename artifact with version ─────────────────────────────────────
+            # ── 10. Rename artifact with version ────────────────────────────────────
             - name: Rename APK
               run: |
                   mv build/app/outputs/flutter-apk/app-release.apk \
                      widget_app-${{ steps.version.outputs.name }}.apk
 
-            # ── 10. Generate SHA-256 checksum (F-Droid & security hygiene) ───────────
+            # ── 11. Generate SHA-256 checksum (F-Droid & security hygiene) ──────────
             - name: Generate checksum
               run: |
                   sha256sum widget_app-${{ steps.version.outputs.name }}.apk \
                     > widget_app-${{ steps.version.outputs.name }}.apk.sha256
 
-            # ── 11. Upload to GitHub Releases ────────────────────────────────────────
+            # ── 12. Upload to GitHub Releases ───────────────────────────────────────
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
@@ -115,7 +119,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            # ── 12. Cleanup – never leave the keystore in the runner ─────────────────
+            # ── 13. Cleanup – never leave the keystore in the runner ────────────────
             - name: Remove keystore
               if: always()
               run: |
