@@ -58,6 +58,20 @@
                 android:resource="@xml/nothing_widget_info" />
         </receiver>
 
+        <!--
+            Required by home_widget ^0.9.0 for background interactivity callbacks.
+            Handles the broadcast fired by HomeWidgetBackgroundIntent (e.g. the
+            "+" button on the home screen widget) and wakes the Dart isolate to
+            run widgetBackgroundCallback() without opening the app.
+        -->
+        <receiver
+            android:name="es.antonborri.home_widget.HomeWidgetBackgroundReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="es.antonborri.home_widget.action.BACKGROUND" />
+            </intent-filter>
+        </receiver>
+
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

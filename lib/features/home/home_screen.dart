@@ -14,6 +14,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final TextEditingController _titleCtrl;
   late final TextEditingController _subtitleCtrl;
+  // Track whether we have pre-filled the controllers from storage yet.
+  bool _controllersSeeded = false;
 
   @override
   void initState() {
@@ -21,14 +23,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _titleCtrl = TextEditingController();
     _subtitleCtrl = TextEditingController();
 
-    // Pre-fill controllers once the async provider resolves.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final data = ref.read(widgetDataProvider).valueOrNull;
-      if (data != null) {
-        _titleCtrl.text = data.title;
-        _subtitleCtrl.text = data.subtitle;
+    // Using listenManual so we can react inside initState (safe in Riverpod).
+    // We seed the text fields exactly once — the first time the async provider
+    // resolves with real data from SharedPreferences.
+    ref.listenManual<AsyncValue<WidgetData>>(widgetDataProvider, (_, next) {
+      if (!_controllersSeeded) {
+        final data = next.valueOrNull;
+        if (data != null) {
+          _controllersSeeded = true;
+          _titleCtrl.text = data.title;
+          _subtitleCtrl.text = data.subtitle;
+        }
       }
-    });
+    }, fireImmediately: true);
   }
 
   @override

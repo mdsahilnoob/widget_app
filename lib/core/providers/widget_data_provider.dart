@@ -54,11 +54,21 @@ class WidgetDataNotifier extends AsyncNotifier<WidgetData> {
   @override
   Future<WidgetData> build() async {
     final stored = await HomeWidgetService.readAll();
-    return WidgetData(
+    final data = WidgetData(
       title: stored.title,
       subtitle: stored.subtitle,
       counter: stored.counter,
     );
+
+    // Seed SharedPrefs on first launch so the Android widget always has
+    // something to display even before the user manually pushes anything.
+    await HomeWidgetService.pushUpdate(
+      title: data.title,
+      subtitle: data.subtitle,
+      counter: data.counter,
+    );
+
+    return data;
   }
 
   // ── Mutations ──────────────────────────────────────────────────────────────
