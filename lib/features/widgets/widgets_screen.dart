@@ -27,7 +27,6 @@ class WidgetsScreen extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: AppConstants.black,
       appBar: AppBar(
         title: Text('WIDGETS', style: textTheme.titleSmall),
         actions: [

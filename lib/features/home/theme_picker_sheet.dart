@@ -19,7 +19,6 @@ class ThemePickerSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final current = ref.watch(brandThemeProvider);
     final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
 
     return SafeArea(
       child: Padding(
@@ -52,7 +51,6 @@ class ThemePickerSheet extends ConsumerWidget {
               return _ThemeCard(
                 brand: brand,
                 isActive: isActive,
-                accentColor: colorScheme.primary,
                 onTap: () {
                   ref.read(brandThemeProvider.notifier).setTheme(brand);
                   Navigator.of(context).pop();
@@ -72,13 +70,11 @@ class _ThemeCard extends StatelessWidget {
   const _ThemeCard({
     required this.brand,
     required this.isActive,
-    required this.accentColor,
     required this.onTap,
   });
 
   final AppBrandTheme brand;
   final bool isActive;
-  final Color accentColor;
   final VoidCallback onTap;
 
   @override

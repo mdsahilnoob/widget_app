@@ -28,10 +28,10 @@ class NothingQuickNoteCard extends ConsumerWidget {
         constraints: const BoxConstraints(minHeight: 120),
         padding: const EdgeInsets.all(AppConstants.spaceMD),
         decoration: BoxDecoration(
-          color: AppConstants.surfaceDark,
+          color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(AppConstants.radiusMD),
           border: Border.all(
-            color: AppConstants.borderGrey,
+            color: Theme.of(context).colorScheme.outline,
             width: AppConstants.borderNormal,
           ),
         ),
@@ -97,13 +97,13 @@ class NothingQuickNoteCard extends ConsumerWidget {
   ) async {
     await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: AppConstants.surfaceDark,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(
           top: Radius.circular(AppConstants.radiusLG),
         ),
-        side: BorderSide(color: AppConstants.borderGrey),
+        side: BorderSide(color: Theme.of(context).colorScheme.outline),
       ),
       builder: (ctx) => _NoteEditorSheet(
         initialNote: currentNote,
@@ -175,7 +175,7 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
               width: 40,
               height: 3,
               decoration: BoxDecoration(
-                color: AppConstants.borderGreyLight,
+                color: Theme.of(context).colorScheme.outlineVariant,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -208,7 +208,7 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                   child: Text(
                     'CLEAR',
                     style: textTheme.labelSmall?.copyWith(
-                      color: AppConstants.whiteSubtle,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),
@@ -219,7 +219,7 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                 child: Text(
                   'CANCEL',
                   style: textTheme.labelSmall?.copyWith(
-                    color: AppConstants.whiteSubtle,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ),
@@ -242,10 +242,7 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                     ? const SizedBox(
                         width: 14,
                         height: 14,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1.5,
-                          color: AppConstants.black,
-                        ),
+                        child: CircularProgressIndicator(strokeWidth: 1.5),
                       )
                     : Text('SAVE', style: textTheme.labelSmall),
               ),
@@ -272,7 +269,7 @@ class _TagPill extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppConstants.borderGreyLight,
+          color: Theme.of(context).colorScheme.outlineVariant,
           width: AppConstants.borderThin,
         ),
         borderRadius: BorderRadius.circular(AppConstants.radiusSM),

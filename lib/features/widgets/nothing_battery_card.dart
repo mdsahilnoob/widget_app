@@ -31,10 +31,10 @@ class NothingBatteryCard extends ConsumerWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(AppConstants.spaceMD),
       decoration: BoxDecoration(
-        color: AppConstants.surfaceDark,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppConstants.radiusMD),
         border: Border.all(
-          color: AppConstants.borderGrey,
+          color: Theme.of(context).colorScheme.outline,
           width: AppConstants.borderNormal,
         ),
       ),
@@ -267,7 +267,7 @@ class _TagPill extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppConstants.borderGreyLight,
+          color: Theme.of(context).colorScheme.outlineVariant,
           width: AppConstants.borderThin,
         ),
         borderRadius: BorderRadius.circular(AppConstants.radiusSM),

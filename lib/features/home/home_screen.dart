@@ -53,7 +53,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: AppConstants.black,
       appBar: AppBar(
         title: Text(
           AppConstants.appName.toUpperCase(),
@@ -201,14 +200,12 @@ class _BridgePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: AppConstants.surfaceDark,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppConstants.radiusMD),
-        border: Border.all(
-          color: AppConstants.borderGrey,
-          width: AppConstants.borderNormal,
-        ),
+        border: Border.all(color: cs.outline, width: AppConstants.borderNormal),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,8 +322,8 @@ class _SyncStatusBar extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: hasError
-            ? AppConstants.accentRed.withValues(alpha: 0.12)
-            : AppConstants.borderGrey,
+            ? Theme.of(context).colorScheme.error.withValues(alpha: 0.12)
+            : Theme.of(context).colorScheme.outline,
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(AppConstants.radiusMD),
         ),
@@ -347,7 +344,7 @@ class _SyncStatusBar extends StatelessWidget {
               hasError ? Icons.error_outline : Icons.check_circle_outline,
               size: 10,
               color: hasError
-                  ? AppConstants.accentRed
+                  ? Theme.of(context).colorScheme.error
                   : AppConstants.whiteSubtle,
             ),
           const SizedBox(width: AppConstants.spaceSM),
@@ -390,7 +387,7 @@ class _PushButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: AppConstants.borderGreyLight,
+            color: Theme.of(context).colorScheme.outlineVariant,
             width: AppConstants.borderNormal,
           ),
           borderRadius: BorderRadius.circular(AppConstants.radiusSM),
@@ -416,12 +413,16 @@ class _CounterButton extends StatelessWidget {
         height: 48,
         decoration: BoxDecoration(
           border: Border.all(
-            color: AppConstants.borderGreyLight,
+            color: Theme.of(context).colorScheme.outlineVariant,
             width: AppConstants.borderNormal,
           ),
           borderRadius: BorderRadius.circular(AppConstants.radiusSM),
         ),
-        child: Icon(icon, color: AppConstants.white, size: 20),
+        child: Icon(
+          icon,
+          color: Theme.of(context).colorScheme.onSurface,
+          size: 20,
+        ),
       ),
     );
   }
@@ -435,9 +436,9 @@ class _BridgeLoadingSkeleton extends StatelessWidget {
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: AppConstants.surfaceDark,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppConstants.radiusMD),
-        border: Border.all(color: AppConstants.borderGrey),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       alignment: Alignment.center,
       child: const SizedBox(
@@ -458,15 +459,15 @@ class _BridgeError extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppConstants.spaceMD),
       decoration: BoxDecoration(
-        color: AppConstants.surfaceDark,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppConstants.radiusMD),
-        border: Border.all(color: AppConstants.accentRed),
+        border: Border.all(color: Theme.of(context).colorScheme.error),
       ),
       child: Text(
         'Widget bridge error:\n$message',
-        style: Theme.of(
-          context,
-        ).textTheme.bodySmall?.copyWith(color: AppConstants.accentRed),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Theme.of(context).colorScheme.error,
+        ),
       ),
     );
   }
@@ -493,16 +494,16 @@ class _StatusCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppConstants.spaceMD),
       decoration: BoxDecoration(
-        color: AppConstants.surfaceDark,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppConstants.radiusMD),
         border: Border.all(
-          color: AppConstants.borderGrey,
+          color: Theme.of(context).colorScheme.outline,
           width: AppConstants.borderNormal,
         ),
       ),
       child: Row(
         children: [
-          Icon(icon, color: AppConstants.white, size: 20),
+          Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 20),
           const SizedBox(width: AppConstants.spaceMD),
           Expanded(child: Text(label, style: textTheme.labelLarge)),
           Text(value, style: textTheme.titleLarge),
