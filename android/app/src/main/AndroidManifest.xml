@@ -32,6 +32,19 @@
             android:value="2" />
 
         <!--
+            Disable Impeller (Flutter's default renderer since 3.16) and fall
+            back to Skia.  Impeller initialises an EGL PBuffer surface during
+            RenderThread startup; on emulators without GPU passthrough (and on
+            some older real devices) EglManager::createPBufferSurface hits a
+            fatal assert → "Lost connection to device".  Skia uses the same
+            OpenGL path but defers surface creation until the window is ready,
+            avoiding the crash.
+        -->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="false" />
+
+        <!--
             Nothing OS home screen widget provider.
 
             Data flow (Flutter → widget):
