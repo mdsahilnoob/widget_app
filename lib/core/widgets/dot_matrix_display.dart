@@ -204,5 +204,6 @@ class _DotMatrixPainter extends CustomPainter {
   bool shouldRepaint(_DotMatrixPainter old) =>
       old.text != text ||
       old.dotSize != dotSize ||
-      old.onPaint.color != onPaint.color;
+      old.onPaint.color != onPaint.color ||
+      old.offPaint.color != offPaint.color;
 }

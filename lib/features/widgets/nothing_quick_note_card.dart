@@ -230,7 +230,13 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                     ? null
                     : () async {
                         setState(() => _isSaving = true);
-                        await widget.onSave(_ctrl.text.trim());
+                        try {
+                          await widget.onSave(_ctrl.text.trim());
+                        } finally {
+                          // Always reset — prevents permanently disabled button
+                          // if onSave throws or the sheet stays open.
+                          if (mounted) setState(() => _isSaving = false);
+                        }
                       },
                 child: _isSaving
                     ? const SizedBox(

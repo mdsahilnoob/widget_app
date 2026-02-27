@@ -66,7 +66,9 @@ class SettingsNotifier extends Notifier<AppSettings> {
     final isDark = _prefs.getBool(AppConstants.prefKeyThemeMode) ?? true;
     final onboardingDone =
         _prefs.getBool(AppConstants.prefKeyOnboardingDone) ?? false;
-    final layoutIndex = _prefs.getInt(AppConstants.prefKeyWidgetLayout) ?? 0;
+    final rawIndex = _prefs.getInt(AppConstants.prefKeyWidgetLayout) ?? 0;
+    // Clamp defensively — a corrupt value would otherwise throw a RangeError.
+    final layoutIndex = rawIndex.clamp(0, WidgetLayout.values.length - 1);
 
     return AppSettings(
       isDarkMode: isDark,

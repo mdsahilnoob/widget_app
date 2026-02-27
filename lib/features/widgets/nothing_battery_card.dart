@@ -223,8 +223,12 @@ class _BatteryShapePainter extends CustomPainter {
 
     // ── Charging bolt ──────────────────────────────────────────────────────
     if (isCharging) {
+      // Use black on lit segments (≥1 segment filled), white on dark background.
+      final boltColor = filledSegs > 0
+          ? AppConstants.black
+          : AppConstants.white;
       final boltPaint = Paint()
-        ..color = AppConstants.black
+        ..color = boltColor
         ..style = PaintingStyle.fill;
 
       final cx = bodyW / 2;

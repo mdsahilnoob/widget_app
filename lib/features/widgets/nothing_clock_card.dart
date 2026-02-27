@@ -51,7 +51,9 @@ class _ClockFace extends StatelessWidget {
     // Colon blinks on odd seconds.
     final colonChar = now.second.isOdd ? ' ' : ':';
 
-    final hh = _pad(now.hour);
+    // Convert to 12-hour so the AM/PM badge is consistent.
+    final hour12 = now.hour % 12 == 0 ? 12 : now.hour % 12;
+    final hh = _pad(hour12);
     final mm = _pad(now.minute);
     final ss = _pad(now.second);
     final timeStr = '$hh$colonChar$mm';
