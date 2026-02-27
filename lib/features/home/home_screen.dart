@@ -29,7 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // resolves with real data from SharedPreferences.
     ref.listenManual<AsyncValue<WidgetData>>(widgetDataProvider, (_, next) {
       if (!_controllersSeeded) {
-        final data = next.valueOrNull;
+        final data = next.value;
         if (data != null) {
           _controllersSeeded = true;
           _titleCtrl.text = data.title;

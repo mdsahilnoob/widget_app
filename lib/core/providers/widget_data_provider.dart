@@ -81,13 +81,13 @@ class WidgetDataNotifier extends AsyncNotifier<WidgetData> {
 
   /// Increments the counter by one and pushes the update.
   Future<void> incrementCounter() async {
-    final current = state.valueOrNull?.counter ?? 0;
+    final current = state.value?.counter ?? 0;
     await _sync(counter: current + 1);
   }
 
   /// Decrements the counter by one (floor 0) and pushes the update.
   Future<void> decrementCounter() async {
-    final current = state.valueOrNull?.counter ?? 0;
+    final current = state.value?.counter ?? 0;
     await _sync(counter: (current - 1).clamp(0, 9999));
   }
 
@@ -99,7 +99,7 @@ class WidgetDataNotifier extends AsyncNotifier<WidgetData> {
   /// Optimistically updates [state], calls [HomeWidgetService.pushUpdate], and
   /// reverts with an error message if the platform call fails.
   Future<void> _sync({String? title, String? subtitle, int? counter}) async {
-    final prev = state.valueOrNull ?? const WidgetData();
+    final prev = state.value ?? const WidgetData();
 
     // Optimistic update so the UI feels instant.
     state = AsyncData(
@@ -119,7 +119,7 @@ class WidgetDataNotifier extends AsyncNotifier<WidgetData> {
         counter: counter,
       );
       state = AsyncData(
-        (state.valueOrNull ?? const WidgetData()).copyWith(isSyncing: false),
+        (state.value ?? const WidgetData()).copyWith(isSyncing: false),
       );
     } catch (e) {
       // Roll back to previous data and surface the error.
