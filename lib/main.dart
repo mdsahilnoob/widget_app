@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/providers/brand_theme_provider.dart';
 import 'core/providers/settings_provider.dart';
 import 'core/providers/widget_data_provider.dart';
 import 'core/services/home_widget_service.dart';
@@ -78,13 +79,16 @@ class _WidgetAppState extends ConsumerState<WidgetApp> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = ref.watch(settingsProvider.select((s) => s.isDarkMode));
+    final brand = ref.watch(brandThemeProvider);
+    final themeData = AppTheme.forBrand(brand);
     return MaterialApp(
       title: 'Widget App',
       debugShowCheckedModeBanner: false,
-      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
-      theme: AppTheme.darkTheme,
-      darkTheme: AppTheme.darkTheme,
+      // Brand theme overrides the light/dark toggle — each brand ships its
+      // own brightness (Nothing/OnePlus = dark, iOS = light).
+      themeMode: ThemeMode.system,
+      theme: themeData,
+      darkTheme: themeData,
       home: const _AppShell(),
     );
   }

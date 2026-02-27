@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/providers/settings_provider.dart';
 import '../../core/providers/widget_data_provider.dart';
+import 'theme_picker_sheet.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -59,6 +60,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           style: textTheme.titleSmall,
         ),
         actions: [
+          // ── Theme picker ────────────────────────────────────────────────
+          IconButton(
+            icon: const Icon(Icons.palette_outlined),
+            tooltip: 'Theme store',
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              builder: (_) => const ThemePickerSheet(),
+            ),
+          ),
+          // ── Layout toggle ───────────────────────────────────────────────
           IconButton(
             icon: Icon(
               settings.widgetLayout == WidgetLayout.grid

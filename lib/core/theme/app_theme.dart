@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../constants/app_constants.dart';
+import 'app_brand_theme.dart';
 import 'app_text_styles.dart';
+import 'ios_theme.dart';
+import 'oneplus_theme.dart';
 
-/// Builds the Nothing OS inspired dark [ThemeData].
+/// Builds and dispatches [ThemeData] for the three supported brand themes.
 ///
-/// Design principles:
+/// Nothing OS design principles (default):
 ///  • Pure black (#000000) backgrounds — no grey-wash.
 ///  • White as the sole primary accent (no colour bleed).
 ///  • High-contrast 1 px borders separating every surface.
 ///  • Monospaced / wide-tracked typography from [AppTextStyles].
 ///  • Zero corner radius on most surfaces (square, industrial look).
 abstract class AppTheme {
-  // ── Public entry point ───────────────────────────────────────────────────
+  // ── Public entry points ──────────────────────────────────────────────────
 
+  /// Legacy accessor — returns the Nothing OS dark theme.
   static ThemeData get darkTheme => _buildDarkTheme();
+
+  /// Returns the [ThemeData] that matches the currently active [AppBrandTheme].
+  /// Use this in [MaterialApp.theme] / [MaterialApp.darkTheme].
+  static ThemeData forBrand(AppBrandTheme brand) => switch (brand) {
+    AppBrandTheme.nothing => _buildDarkTheme(),
+    AppBrandTheme.onePlus => OnePlusTheme.build(),
+    AppBrandTheme.iOS => IOSTheme.build(),
+  };
 
   // ── Private builder ───────────────────────────────────────────────────────
 

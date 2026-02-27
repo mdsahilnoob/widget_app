@@ -62,6 +62,9 @@ abstract class AppConstants {
   static const String prefKeyOnboardingDone = 'onboarding_done';
   static const String prefKeyWidgetLayout = 'widget_layout';
 
+  /// The active brand theme (nothing | onePlus | iOS).
+  static const String prefKeyBrandTheme = 'brand_theme';
+
   // ── Widget Library — SharedPrefs Keys ─────────────────────────────────────
   /// Battery level (0–100, int). Simulated in V1; swap for battery_plus in V2.
   static const String prefKeyBatteryLevel = 'battery_level';
