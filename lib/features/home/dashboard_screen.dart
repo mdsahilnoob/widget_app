@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../core/models/academic_event.dart';
 import '../../core/models/class_session.dart';
 import '../../main.dart';
@@ -28,6 +29,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: const Color(0xFF1E212B),
         duration: const Duration(seconds: 2),
       ),
+    );
+  }
+
+  void _shareApp() {
+    Share.share(
+      'Check out this premium University Timetable app! 🎓 Download it here: https://mdsahil.me',
+      subject: 'Download University Timetable App',
     );
   }
 
@@ -173,6 +181,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     child: _DashboardAppBar(
                       onMenuTap: () => _showSnackBar('Opening Apps Menu...'),
+                      onShareTap: _shareApp,
                       onBellTap: () => _showSnackBar('No new notifications'),
                       onProfileTap: () =>
                           _showSnackBar('Opening Profile Settings...'),
@@ -183,7 +192,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: Text(
-                      'Daily\nDashboard',
+                      'Dashboard',
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -404,11 +413,13 @@ class _DashboardAppBar extends StatelessWidget {
   final VoidCallback onMenuTap;
   final VoidCallback onBellTap;
   final VoidCallback onProfileTap;
+  final VoidCallback onShareTap;
 
   const _DashboardAppBar({
     required this.onMenuTap,
     required this.onBellTap,
     required this.onProfileTap,
+    required this.onShareTap,
   });
 
   @override
@@ -433,6 +444,22 @@ class _DashboardAppBar extends StatelessWidget {
         ),
         Row(
           children: [
+            GestureDetector(
+              onTap: onShareTap,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    width: 1,
+                  ),
+                ),
+                child: const Icon(LucideIcons.share2, size: 20),
+              ),
+            ),
+            const SizedBox(width: 12),
             GestureDetector(
               onTap: onBellTap,
               child: Container(

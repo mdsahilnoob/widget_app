@@ -195,42 +195,39 @@ class _WeekdayPicker extends StatelessWidget {
             width: 1.5,
           ),
         ),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: days.map((day) {
-                final isSelected = day['id'] == selectedDay;
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () => onDaySelected(day['id'] as int),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? const Color(0xFF2DD4BF)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(
-                        child: Text(
-                          day['label'] as String,
-                          style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black54,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.w600,
-                            fontSize: 13,
-                          ),
-                        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: days.map((day) {
+            final isSelected = day['id'] == selectedDay;
+            return Expanded(
+              child: GestureDetector(
+                onTap: () => onDaySelected(day['id'] as int),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xFF2DD4BF)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Center(
+                    child: Text(
+                      day['label'] as String,
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black54,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.w600,
+                        fontSize: 11, // Smaller font to fit 5 items
                       ),
                     ),
                   ),
-                );
-              }).toList(),
+                ),
+              ),
             );
-          },
+          }).toList(),
         ),
       ),
     );

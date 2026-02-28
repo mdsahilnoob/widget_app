@@ -29,7 +29,7 @@ class _AppNavigationState extends State<AppNavigation> {
   Widget _buildCustomBottomBar() {
     return SafeArea(
       child: Container(
-        margin: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+        margin: const EdgeInsets.only(left: 12, right: 12, bottom: 20),
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(40),
@@ -58,11 +58,7 @@ class _AppNavigationState extends State<AppNavigation> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildNavItem(0, LucideIcons.home, 'Home'),
-                  _buildNavItem(
-                    1,
-                    LucideIcons.calendar,
-                    'Schedule',
-                  ), // Shortened label
+                  _buildNavItem(1, LucideIcons.calendar, 'Class'),
                   _buildNavItem(2, LucideIcons.fileText, 'Notes'),
                   _buildNavItem(3, LucideIcons.book, 'PYQs'),
                   _buildNavItem(4, LucideIcons.info, 'About'),
@@ -89,8 +85,8 @@ class _AppNavigationState extends State<AppNavigation> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOutQuint,
         padding: EdgeInsets.symmetric(
-          horizontal: isSelected ? 16 : 12,
-          vertical: 12,
+          horizontal: isSelected ? 12 : 8,
+          vertical: 10,
         ),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFF1E212B) : Colors.transparent,
