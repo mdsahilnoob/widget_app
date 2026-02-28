@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -33,6 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _shareApp() {
+    // ignore: deprecated_member_use
     Share.share(
       'Check out this premium University Timetable app! 🎓 Download it here: https://mdsahil.me',
       subject: 'Download University Timetable App',

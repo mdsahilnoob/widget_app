@@ -1,6 +1,6 @@
-# Widget App
+# University Timetable App
 
-> Nothing OS-style home screen widget manager — local-first, 100% open source.
+> A premium, modern University Timetable manager built with Flutter.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.29-blue?logo=flutter)](https://flutter.dev)
@@ -9,21 +9,18 @@
 
 ## Features
 
-| Widget                    | Description                                                                       |
-| ------------------------- | --------------------------------------------------------------------------------- |
-| **Digital Clock**         | Dot-matrix HH:MM display with blinking colon, AM/PM badge and running seconds     |
-| **Battery Level**         | Custom painter with 10 segments, charging bolt, red accent below 20 %             |
-| **Quick Note**            | Editable note pushed live to the Android home screen widget subtitle              |
-| **Widget Bridge**         | Control panel: push title, subtitle, counter to your home screen widget instantly |
-| **Bidirectional counter** | Tap `+` on the home screen widget without opening the app                         |
-
-All data is stored locally in SharedPreferences — no internet connection, no analytics, no trackers.
+- **Smart Timetable**: Organize your classes with a sleek, daily schedule view.
+- **Quick Notes**: Capture thoughts on-the-go with our full-screen, high-performance editor.
+- **PYQs Access**: Easy access to Previous Year Question papers for all your semesters.
+- **Bento UI & Glassmorphism**: A modern design language inspired by Nothing OS and Apple's glassmorphism.
+- **Local-first Persistence**: Fast, offline data storage using **Isar DB**.
+- **Cross-Platform**: Smooth performance on both mobile and tablet devices.
 
 ---
 
 ## Screenshots
 
-_Add screenshots to `fastlane/metadata/android/en-US/images/phoneScreenshots/`_
+_Add your screenshots to the `assets/images/` or `fastlane/metadata/` directory._
 
 ---
 
@@ -31,16 +28,23 @@ _Add screenshots to `fastlane/metadata/android/en-US/images/phoneScreenshots/`_
 
 ### Prerequisites
 
-- Flutter SDK `^3.11.0` ([install](https://docs.flutter.dev/get-started/install))
-- Android SDK (API 21+)
+- Flutter SDK `^3.x` ([install](https://docs.flutter.dev/get-started/install))
+- Android SDK (API 24+)
 - A physical or emulated Android device
 
 ### Run locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/widget_app.git
+# Clone the repository
+git clone https://github.com/mdsahilnoob/widget_app.git
+
+# Navigate to project
 cd widget_app
+
+# Fetch dependencies
 flutter pub get
+
+# Run on your device
 flutter run
 ```
 
@@ -95,29 +99,14 @@ a future release.
 
 ---
 
-## Architecture
+## Credits
 
-```
-lib/
-├── core/
-│   ├── constants/      app_constants.dart
-│   ├── providers/      clock, battery, quick_note, widget_data, settings
-│   ├── services/       home_widget_service.dart
-│   ├── theme/          app_theme.dart, app_text_styles.dart
-│   └── widgets/        dot_matrix_display.dart
-└── features/
-    ├── home/           home_screen.dart  (Widget Bridge panel)
-    └── widgets/        nothing_clock_card, nothing_battery_card,
-                        nothing_quick_note_card, widgets_screen.dart
-```
-
-State management: **Riverpod v2** (`AsyncNotifierProvider`, `StreamProvider.autoDispose`)  
-Persistence: **SharedPreferences**  
-Home screen widgets: **home_widget ^0.9.0**
+Built with ❤️ by **Mohammad Sahil**
+Designer & Developer
 
 ---
 
 ## License
 
-Copyright © 2025 widget_app contributors.  
+Copyright © 2025 University Timetable Contributors.  
 Licensed under the [GNU General Public License v3.0](LICENSE).

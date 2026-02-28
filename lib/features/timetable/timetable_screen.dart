@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -287,7 +286,7 @@ class _ClassItem extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: const Color(0xFF1E212B),
+                    color: Color(0xFF1E212B),
                   ),
                 ),
                 const SizedBox(height: 4),
