@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../calendar/academic_calendar_screen.dart';
+import '../notes/notes_screen.dart';
+import '../pyqs/pyqs_screen.dart';
+import '../about/about_us_screen.dart';
 import '../timetable/daily_classes_screen.dart';
 
 class AppNavigation extends StatefulWidget {
@@ -14,10 +18,10 @@ class _AppNavigationState extends State<AppNavigation> {
 
   final List<Widget> _screens = [
     const DailyClassesScreen(),
-    const Scaffold(body: Center(child: Text('Academic Calendar'))),
-    const Scaffold(body: Center(child: Text('Notes'))),
-    const Scaffold(body: Center(child: Text('PYQs'))),
-    const Scaffold(body: Center(child: Text('About Us'))),
+    const AcademicCalendarScreen(),
+    const NotesScreen(),
+    const PyqsScreen(),
+    const AboutUsScreen(),
   ];
 
   final List<NavigationDestination> _destinations = const [
@@ -29,10 +33,19 @@ class _AppNavigationState extends State<AppNavigation> {
   ];
 
   final List<NavigationRailDestination> _railDestinations = const [
-    NavigationRailDestination(icon: Icon(Icons.schedule), label: Text('Classes')),
-    NavigationRailDestination(icon: Icon(Icons.calendar_month), label: Text('Calendar')),
+    NavigationRailDestination(
+      icon: Icon(Icons.schedule),
+      label: Text('Classes'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.calendar_month),
+      label: Text('Calendar'),
+    ),
     NavigationRailDestination(icon: Icon(Icons.note), label: Text('Notes')),
-    NavigationRailDestination(icon: Icon(Icons.library_books), label: Text('PYQs')),
+    NavigationRailDestination(
+      icon: Icon(Icons.library_books),
+      label: Text('PYQs'),
+    ),
     NavigationRailDestination(icon: Icon(Icons.info), label: Text('About Us')),
   ];
 
