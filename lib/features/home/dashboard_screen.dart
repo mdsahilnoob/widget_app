@@ -151,11 +151,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFFE4F5F4),
+        color: Color(0xFFF8FAFC),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFD4EFEF), Color(0xFFE4F5F4), Color(0xFFF0FDF4)],
+          colors: [Color(0xFFE2E8F0), Color(0xFFF1F5F9), Color(0xFFF8FAFC)],
         ),
       ),
       child: SafeArea(
@@ -298,7 +298,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       );
                     },
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 32)),
                 ],
 
                 if (filter == 'Overview' ||
@@ -306,7 +305,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     filter == 'Exams') ...[
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      padding: const EdgeInsets.fromLTRB(24, 32, 24, 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -366,7 +365,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       }
 
                       return SliverPadding(
-                        padding: const EdgeInsets.all(24.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 8,
+                        ),
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate((
                             context,
@@ -388,6 +390,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     },
                   ),
                 ],
+                const SliverToBoxAdapter(child: SizedBox(height: 120)),
               ],
             );
           },
@@ -418,9 +421,12 @@ class _DashboardAppBar extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.8),
+              color: Colors.white,
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 1.5),
+              border: Border.all(
+                color: Colors.black.withValues(alpha: 0.05),
+                width: 1,
+              ),
             ),
             child: const Icon(LucideIcons.grid, size: 24),
           ),
@@ -432,9 +438,12 @@ class _DashboardAppBar extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.8),
+                  color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 1.5),
+                  border: Border.all(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    width: 1,
+                  ),
                 ),
                 child: const Icon(LucideIcons.bell, size: 20),
               ),
@@ -475,11 +484,14 @@ class _FilterChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected
-              ? const Color(0xFF1E212B)
-              : Colors.white.withValues(alpha: 0.6),
+          color: isSelected ? const Color(0xFF1E212B) : Colors.white,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white, width: 1.5),
+          border: Border.all(
+            color: isSelected
+                ? Colors.transparent
+                : Colors.black.withValues(alpha: 0.05),
+            width: 1.5,
+          ),
         ),
         child: Text(
           label,

@@ -48,7 +48,7 @@ class AboutUsScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         mainAxisSpacing: 16,
                         crossAxisSpacing: 16,
-                        childAspectRatio: 0.9,
+                        childAspectRatio: 0.95,
                         children: [
                           _BentoCard(
                             icon: LucideIcons.globe,
@@ -91,7 +91,7 @@ class AboutUsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       const _TechStackCard(),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 48),
                       const Text(
                         'Made with ❤️ for students',
                         style: TextStyle(
@@ -100,7 +100,9 @@ class AboutUsScreen extends StatelessWidget {
                           fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(
+                        height: 140,
+                      ), // Extra padding for floating navbar
                     ],
                   ),
                 ),
@@ -152,66 +154,57 @@ class _AppHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(32),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(32.0),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(32),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.4),
-              width: 1.5,
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(32.0),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.4),
+          width: 1.5,
+        ),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              LucideIcons.graduationCap,
+              size: 48,
+              color: Color(0xFF2DD4BF),
             ),
           ),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  LucideIcons.graduationCap,
-                  size: 48,
-                  color: Color(0xFF2DD4BF),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'University Timetable',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: const Color(0xFF1E212B),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E212B),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Text(
-                  'v1.0.0',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-            ],
+          const SizedBox(height: 20),
+          Text(
+            'University Timetable',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: const Color(0xFF1E212B),
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E212B),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Text(
+              'v1.0.0',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -451,14 +444,14 @@ class _BentoCard extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontWeight: FontWeight.w800,
-                fontSize: 16,
+                fontSize: 15,
                 color: Color(0xFF1E212B),
               ),
             ),
             Text(
               subtitle,
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xFF1E212B).withValues(alpha: 0.5),
               ),
