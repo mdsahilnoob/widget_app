@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
-import '../calendar/academic_calendar_screen.dart';
+import '../home/dashboard_screen.dart';
+import '../timetable/timetable_screen.dart';
 import '../notes/notes_screen.dart';
 import '../pyqs/pyqs_screen.dart';
 import '../about/about_us_screen.dart';
-import '../timetable/daily_classes_screen.dart';
 
 class AppNavigation extends StatefulWidget {
   const AppNavigation({super.key});
@@ -17,36 +18,42 @@ class _AppNavigationState extends State<AppNavigation> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const DailyClassesScreen(),
-    const AcademicCalendarScreen(),
+    const DashboardScreen(),
+    const TimetableScreen(),
     const NotesScreen(),
     const PyqsScreen(),
     const AboutUsScreen(),
   ];
 
   final List<NavigationDestination> _destinations = const [
-    NavigationDestination(icon: Icon(Icons.schedule), label: 'Classes'),
-    NavigationDestination(icon: Icon(Icons.calendar_month), label: 'Calendar'),
-    NavigationDestination(icon: Icon(Icons.note), label: 'Notes'),
-    NavigationDestination(icon: Icon(Icons.library_books), label: 'PYQs'),
-    NavigationDestination(icon: Icon(Icons.info), label: 'About Us'),
+    NavigationDestination(icon: Icon(LucideIcons.home), label: 'Home'),
+    NavigationDestination(icon: Icon(LucideIcons.calendar), label: 'Timetable'),
+    NavigationDestination(icon: Icon(LucideIcons.fileText), label: 'Notes'),
+    NavigationDestination(icon: Icon(LucideIcons.book), label: 'PYQs'),
+    NavigationDestination(icon: Icon(LucideIcons.info), label: 'About Us'),
   ];
 
   final List<NavigationRailDestination> _railDestinations = const [
     NavigationRailDestination(
-      icon: Icon(Icons.schedule),
-      label: Text('Classes'),
+      icon: Icon(LucideIcons.home),
+      label: Text('Home'),
     ),
     NavigationRailDestination(
-      icon: Icon(Icons.calendar_month),
-      label: Text('Calendar'),
+      icon: Icon(LucideIcons.calendar),
+      label: Text('Timetable'),
     ),
-    NavigationRailDestination(icon: Icon(Icons.note), label: Text('Notes')),
     NavigationRailDestination(
-      icon: Icon(Icons.library_books),
+      icon: Icon(LucideIcons.fileText),
+      label: Text('Notes'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(LucideIcons.book),
       label: Text('PYQs'),
     ),
-    NavigationRailDestination(icon: Icon(Icons.info), label: Text('About Us')),
+    NavigationRailDestination(
+      icon: Icon(LucideIcons.info),
+      label: Text('About Us'),
+    ),
   ];
 
   @override
