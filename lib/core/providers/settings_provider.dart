@@ -2,10 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/app_constants.dart';
 
-// ── SharedPreferences singleton provider ─────────────────────────────────────
-
-/// Provides an async-initialised [SharedPreferences] instance.
-/// Override this in tests with [ProviderContainer(overrides: [...])].
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError(
     'sharedPreferencesProvider must be overridden before use. '
@@ -14,9 +10,6 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   );
 });
 
-// ── Settings state ────────────────────────────────────────────────────────────
-
-/// Immutable snapshot of all user-facing settings.
 class AppSettings {
   const AppSettings({
     this.isDarkMode = true,
@@ -49,8 +42,6 @@ class AppSettings {
 
 enum WidgetLayout { grid, list }
 
-// ── Settings notifier ────────────────────────────────────────────────────────
-
 class SettingsNotifier extends Notifier<AppSettings> {
   late SharedPreferences _prefs;
 
@@ -60,14 +51,12 @@ class SettingsNotifier extends Notifier<AppSettings> {
     return _loadFromPrefs();
   }
 
-  // ── Load ──────────────────────────────────────────────────────────────────
-
   AppSettings _loadFromPrefs() {
     final isDark = _prefs.getBool(AppConstants.prefKeyThemeMode) ?? true;
     final onboardingDone =
         _prefs.getBool(AppConstants.prefKeyOnboardingDone) ?? false;
     final rawIndex = _prefs.getInt(AppConstants.prefKeyWidgetLayout) ?? 0;
-    // Clamp defensively — a corrupt value would otherwise throw a RangeError.
+
     final layoutIndex = rawIndex.clamp(0, WidgetLayout.values.length - 1);
 
     return AppSettings(
@@ -76,8 +65,6 @@ class SettingsNotifier extends Notifier<AppSettings> {
       widgetLayout: WidgetLayout.values[layoutIndex],
     );
   }
-
-  // ── Mutations ─────────────────────────────────────────────────────────────
 
   Future<void> setDarkMode(bool value) async {
     await _prefs.setBool(AppConstants.prefKeyThemeMode, value);
@@ -102,7 +89,6 @@ class SettingsNotifier extends Notifier<AppSettings> {
   }
 }
 
-/// The single global provider for all app settings.
 final settingsProvider = NotifierProvider<SettingsNotifier, AppSettings>(
   SettingsNotifier.new,
 );

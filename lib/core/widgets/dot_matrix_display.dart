@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
 
-// ── 5×7 dot-matrix font ───────────────────────────────────────────────────────
-//
-// Each character is a list of 7 row-bitmasks.
-// For 5-column chars: bit 4 = leftmost column, bit 0 = rightmost.
-// For 3-column chars (marked in [_charCols]): bit 2 = left, bit 0 = right.
-//
-// This font is used to render the Nothing OS inspired dot-matrix display
-// without requiring any external TTF assets.
-
 const Map<String, List<int>> _font = {
-  // ── Digits ──────────────────────────────────────────────────────────────
   '0': [14, 17, 19, 21, 25, 17, 14],
   '1': [4, 12, 4, 4, 4, 4, 14],
   '2': [14, 17, 1, 2, 4, 8, 31],
@@ -21,13 +11,13 @@ const Map<String, List<int>> _font = {
   '7': [31, 1, 2, 2, 4, 4, 4],
   '8': [14, 17, 17, 14, 17, 17, 14],
   '9': [14, 17, 17, 15, 1, 1, 14],
-  // ── Punctuation (3-column, listed in _charCols) ───────────────────────
-  ':': [0, 2, 0, 0, 2, 0, 0], // center dot = bit 1 of 3
+
+  ':': [0, 2, 0, 0, 2, 0, 0],
   '.': [0, 0, 0, 0, 0, 3, 3],
   '-': [0, 0, 0, 7, 0, 0, 0],
   '+': [0, 2, 2, 7, 2, 2, 0],
   '/': [0, 1, 1, 2, 4, 4, 0],
-  // ── Letters ───────────────────────────────────────────────────────────
+
   'A': [14, 17, 17, 31, 17, 17, 17],
   'B': [30, 17, 17, 30, 17, 17, 30],
   'C': [14, 17, 16, 16, 16, 17, 14],
@@ -58,7 +48,6 @@ const Map<String, List<int>> _font = {
   '%': [24, 25, 2, 4, 8, 19, 3],
 };
 
-/// Characters that use 3 columns instead of the standard 5.
 const Map<String, int> _charCols = {
   ':': 3,
   '.': 3,
@@ -68,24 +57,6 @@ const Map<String, int> _charCols = {
   '%': 5,
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Public widget
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// Renders [text] as a Nothing OS style dot-matrix display using a
-/// [CustomPainter]. No TTF font files are required.
-///
-/// Supports: 0-9, A-Z (uppercase), ':', '.', '-', '+', '/', '%', ' '.
-///
-/// Example:
-/// ```dart
-/// DotMatrixDisplay(
-///   text: '12:34',
-///   dotSize: 6,
-///   spacing: 2,
-///   onColor: Colors.white,
-/// )
-/// ```
 class DotMatrixDisplay extends StatelessWidget {
   const DotMatrixDisplay({
     super.key,
@@ -99,26 +70,18 @@ class DotMatrixDisplay extends StatelessWidget {
 
   final String text;
 
-  /// Diameter of each individual dot in logical pixels.
   final double dotSize;
 
-  /// Gap between adjacent dot centres in the same character, in pixels.
   final double spacing;
 
-  /// Additional horizontal gap between characters, in pixels.
   final double charSpacing;
 
-  /// Colour of a lit (on) dot.
   final Color onColor;
 
-  /// Opacity of unlit (off / ghost) dots — set to 0 to hide them.
   final double offOpacity;
-
-  // ── Sizing calculations ───────────────────────────────────────────────────
 
   double get _cell => dotSize + spacing;
 
-  /// Width in logical pixels for a character with [cols] dot-columns.
   double _charWidth(int cols) => (cols - 1) * _cell + dotSize;
 
   double get _totalWidth {
@@ -152,10 +115,6 @@ class DotMatrixDisplay extends StatelessWidget {
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Painter
-// ─────────────────────────────────────────────────────────────────────────────
 
 class _DotMatrixPainter extends CustomPainter {
   const _DotMatrixPainter({
@@ -191,7 +150,6 @@ class _DotMatrixPainter extends CustomPainter {
     for (var row = 0; row < 7; row++) {
       final rowBits = glyph[row];
       for (var col = 0; col < cols; col++) {
-        // Bit order: most-significant bit = leftmost column.
         final bit = (rowBits >> (cols - 1 - col)) & 1;
         final cx = offsetX + col * cell + r;
         final cy = row * cell + r;

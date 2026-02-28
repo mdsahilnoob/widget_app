@@ -3,15 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers/brand_theme_provider.dart';
 import '../../core/theme/app_brand_theme.dart';
 
-/// Bottom sheet that lets the user pick between the three brand UI themes.
-///
-/// Open it with:
-/// ```dart
-/// showModalBottomSheet(
-///   context: context,
-///   builder: (_) => const ThemePickerSheet(),
-/// );
-/// ```
 class ThemePickerSheet extends ConsumerWidget {
   const ThemePickerSheet({super.key});
 
@@ -27,7 +18,6 @@ class ThemePickerSheet extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Header ────────────────────────────────────────────────────
             Row(
               children: [
                 Text('THEME STORE', style: textTheme.titleSmall),
@@ -45,7 +35,6 @@ class ThemePickerSheet extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
 
-            // ── Theme cards ───────────────────────────────────────────────
             ...AppBrandTheme.values.map((brand) {
               final isActive = brand == current;
               return _ThemeCard(
@@ -63,8 +52,6 @@ class ThemePickerSheet extends ConsumerWidget {
     );
   }
 }
-
-// ── Individual brand card ─────────────────────────────────────────────────────
 
 class _ThemeCard extends StatelessWidget {
   const _ThemeCard({
@@ -98,7 +85,6 @@ class _ThemeCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // ── Colour swatch ──────────────────────────────────────────
               Container(
                 width: 64,
                 height: 64,
@@ -116,7 +102,6 @@ class _ThemeCard extends StatelessWidget {
                 ),
               ),
 
-              // ── Text ───────────────────────────────────────────────────
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -147,7 +132,6 @@ class _ThemeCard extends StatelessWidget {
                 ),
               ),
 
-              // ── Active badge ───────────────────────────────────────────
               Padding(
                 padding: const EdgeInsets.only(right: 14),
                 child: isActive

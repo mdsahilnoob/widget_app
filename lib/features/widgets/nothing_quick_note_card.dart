@@ -4,15 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/providers/quick_note_provider.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Nothing Quick Note Widget Card
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// Displays a user-editable note on a Nothing OS style card.
-///
-/// • Tapping the card opens a bottom sheet editor.
-/// • The note is persisted via [QuickNoteNotifier] → SharedPreferences.
-/// • Saving also pushes the note to the Android home screen widget subtitle.
 class NothingQuickNoteCard extends ConsumerWidget {
   const NothingQuickNoteCard({super.key});
 
@@ -38,7 +29,6 @@ class NothingQuickNoteCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Header row ─────────────────────────────────────────────────
             Row(
               children: [
                 _TagPill(label: 'QUICK NOTE'),
@@ -52,7 +42,6 @@ class NothingQuickNoteCard extends ConsumerWidget {
             ),
             const SizedBox(height: AppConstants.spaceMD),
 
-            // ── Note content ──────────────────────────────────────────────
             if (isEmpty)
               Text(
                 'TAP TO ADD A NOTE\u2026',
@@ -88,8 +77,6 @@ class NothingQuickNoteCard extends ConsumerWidget {
     );
   }
 
-  // ── Bottom sheet editor ───────────────────────────────────────────────────
-
   Future<void> _openEditor(
     BuildContext context,
     WidgetRef ref,
@@ -119,8 +106,6 @@ class NothingQuickNoteCard extends ConsumerWidget {
     );
   }
 }
-
-// ── Editor sheet ──────────────────────────────────────────────────────────────
 
 class _NoteEditorSheet extends StatefulWidget {
   const _NoteEditorSheet({
@@ -169,7 +154,6 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Handle ────────────────────────────────────────────────────────
           Center(
             child: Container(
               width: 40,
@@ -184,7 +168,6 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
           Text('EDIT NOTE', style: textTheme.titleSmall),
           const SizedBox(height: AppConstants.spaceMD),
 
-          // ── Text field ────────────────────────────────────────────────────
           TextField(
             controller: _ctrl,
             style: textTheme.bodyLarge,
@@ -198,10 +181,8 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
           ),
           const SizedBox(height: AppConstants.spaceMD),
 
-          // ── Buttons ───────────────────────────────────────────────────────
           Row(
             children: [
-              // Clear
               if (widget.initialNote.isNotEmpty)
                 TextButton(
                   onPressed: _isSaving ? null : widget.onClear,
@@ -213,7 +194,7 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                   ),
                 ),
               const Spacer(),
-              // Cancel
+
               TextButton(
                 onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
                 child: Text(
@@ -224,7 +205,7 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                 ),
               ),
               const SizedBox(width: AppConstants.spaceSM),
-              // Save
+
               ElevatedButton(
                 onPressed: _isSaving
                     ? null
@@ -233,8 +214,6 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                         try {
                           await widget.onSave(_ctrl.text.trim());
                         } finally {
-                          // Always reset — prevents permanently disabled button
-                          // if onSave throws or the sheet stays open.
                           if (mounted) setState(() => _isSaving = false);
                         }
                       },
@@ -253,8 +232,6 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
     );
   }
 }
-
-// ── Tag pill ──────────────────────────────────────────────────────────────────
 
 class _TagPill extends StatelessWidget {
   const _TagPill({required this.label});

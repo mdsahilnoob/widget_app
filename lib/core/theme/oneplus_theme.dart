@@ -3,17 +3,7 @@ import 'package:flutter/services.dart';
 import 'app_brand_theme.dart';
 import 'theme_fonts.dart';
 
-/// Full [ThemeData] for the OnePlus / OxygenOS aesthetic.
-///
-/// Palette:
-///  • Background  — near-black `#090909`
-///  • Surface     — `#141414`
-///  • Accent      — OnePlus red `#FF3131`
-///  • Border      — `#2A2A2A`
-///  • Font        — Outfit (downloaded via google_fonts on first use)
-///  • Radius      — 16 dp (rounded, energetic)
 abstract class OnePlusTheme {
-  // ── Palette ────────────────────────────────────────────────────────────────
   static const _red = Color(0xFFFF3131);
   static const _bg = Color(0xFF090909);
   static const _surface = Color(0xFF141414);
@@ -135,7 +125,6 @@ abstract class OnePlusTheme {
       scaffoldBackgroundColor: _bg,
       textTheme: textTheme,
 
-      // ── AppBar ──────────────────────────────────────────────────────────
       appBarTheme: AppBarTheme(
         backgroundColor: _bg,
         foregroundColor: _white,
@@ -146,7 +135,6 @@ abstract class OnePlusTheme {
         shape: const Border(bottom: BorderSide(color: _border, width: 1)),
       ),
 
-      // ── Card ────────────────────────────────────────────────────────────
       cardTheme: CardThemeData(
         color: _surface,
         elevation: 0,
@@ -157,17 +145,14 @@ abstract class OnePlusTheme {
         ),
       ),
 
-      // ── Divider ─────────────────────────────────────────────────────────
       dividerTheme: const DividerThemeData(
         color: _border,
         thickness: 1,
         space: 0,
       ),
 
-      // ── Icons ────────────────────────────────────────────────────────────
       iconTheme: const IconThemeData(color: _white, size: 24),
 
-      // ── Buttons ──────────────────────────────────────────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: _red,
@@ -198,7 +183,6 @@ abstract class OnePlusTheme {
         ),
       ),
 
-      // ── Input ────────────────────────────────────────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
         border: OutlineInputBorder(
@@ -217,7 +201,6 @@ abstract class OnePlusTheme {
         hintStyle: textTheme.bodySmall,
       ),
 
-      // ── Navigation ───────────────────────────────────────────────────────
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: _bg,
         indicatorColor: _border,
@@ -235,7 +218,6 @@ abstract class OnePlusTheme {
         }),
       ),
 
-      // ── ListTile ─────────────────────────────────────────────────────────
       listTileTheme: const ListTileThemeData(
         tileColor: Colors.transparent,
         iconColor: _red,
@@ -243,7 +225,6 @@ abstract class OnePlusTheme {
         contentPadding: EdgeInsets.symmetric(horizontal: 16),
       ),
 
-      // ── Switch ───────────────────────────────────────────────────────────
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
           (s) => s.contains(WidgetState.selected) ? _bg : _muted,
@@ -253,7 +234,6 @@ abstract class OnePlusTheme {
         ),
       ),
 
-      // ── SnackBar ─────────────────────────────────────────────────────────
       snackBarTheme: SnackBarThemeData(
         backgroundColor: _surface,
         contentTextStyle: textTheme.bodyMedium,

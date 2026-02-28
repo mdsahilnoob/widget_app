@@ -6,56 +6,41 @@ import 'app_text_styles.dart';
 import 'ios_theme.dart';
 import 'oneplus_theme.dart';
 
-/// Builds and dispatches [ThemeData] for the three supported brand themes.
-///
-/// Nothing OS design principles (default):
-///  • Pure black (#000000) backgrounds — no grey-wash.
-///  • White as the sole primary accent (no colour bleed).
-///  • High-contrast 1 px borders separating every surface.
-///  • Monospaced / wide-tracked typography from [AppTextStyles].
-///  • Zero corner radius on most surfaces (square, industrial look).
 abstract class AppTheme {
-  // ── Public entry points ──────────────────────────────────────────────────
-
-  /// Legacy accessor — returns the Nothing OS dark theme.
   static ThemeData get darkTheme => _buildDarkTheme();
 
-  /// Returns the [ThemeData] that matches the currently active [AppBrandTheme].
-  /// Use this in [MaterialApp.theme] / [MaterialApp.darkTheme].
   static ThemeData forBrand(AppBrandTheme brand) => switch (brand) {
     AppBrandTheme.nothing => _buildDarkTheme(),
     AppBrandTheme.onePlus => OnePlusTheme.build(),
     AppBrandTheme.iOS => IOSTheme.build(),
   };
 
-  // ── Private builder ───────────────────────────────────────────────────────
-
   static ThemeData _buildDarkTheme() {
     const colorScheme = ColorScheme(
       brightness: Brightness.dark,
-      // Backgrounds
+
       surface: AppConstants.black,
-      // Primary
+
       primary: AppConstants.white,
       onPrimary: AppConstants.black,
       primaryContainer: AppConstants.borderGrey,
       onPrimaryContainer: AppConstants.white,
-      // Secondary
+
       secondary: AppConstants.whiteMuted,
       onSecondary: AppConstants.black,
       secondaryContainer: AppConstants.borderGrey,
       onSecondaryContainer: AppConstants.white,
-      // Tertiary
+
       tertiary: AppConstants.accentRed,
       onTertiary: AppConstants.white,
       tertiaryContainer: AppConstants.borderGrey,
       onTertiaryContainer: AppConstants.white,
-      // Error
+
       error: AppConstants.accentRed,
       onError: AppConstants.white,
       errorContainer: AppConstants.borderGrey,
       onErrorContainer: AppConstants.accentRed,
-      // Surfaces
+
       onSurface: AppConstants.white,
       onSurfaceVariant: AppConstants.whiteMuted,
       surfaceContainerHighest: AppConstants.borderGrey,
@@ -67,7 +52,6 @@ abstract class AppTheme {
       inversePrimary: AppConstants.black,
     );
 
-    // Keep system UI bars pitch black with white icons.
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -83,7 +67,6 @@ abstract class AppTheme {
       scaffoldBackgroundColor: AppConstants.black,
       fontFamily: AppConstants.fontFamily,
 
-      // ── Text theme ────────────────────────────────────────────────────────
       textTheme: const TextTheme(
         displayLarge: AppTextStyles.displayLarge,
         displayMedium: AppTextStyles.displayMedium,
@@ -98,7 +81,6 @@ abstract class AppTheme {
         labelSmall: AppTextStyles.labelSmall,
       ),
 
-      // ── AppBar ─────────────────────────────────────────────────────────────
       appBarTheme: const AppBarTheme(
         backgroundColor: AppConstants.black,
         foregroundColor: AppConstants.white,
@@ -118,7 +100,6 @@ abstract class AppTheme {
         ),
       ),
 
-      // ── Card ───────────────────────────────────────────────────────────────
       cardTheme: CardThemeData(
         color: AppConstants.surfaceDark,
         elevation: 0,
@@ -132,17 +113,14 @@ abstract class AppTheme {
         ),
       ),
 
-      // ── Divider ────────────────────────────────────────────────────────────
       dividerTheme: const DividerThemeData(
         color: AppConstants.borderGrey,
         thickness: AppConstants.borderNormal,
         space: 0,
       ),
 
-      // ── Icon ───────────────────────────────────────────────────────────────
       iconTheme: const IconThemeData(color: AppConstants.white, size: 24),
 
-      // ── ElevatedButton ────────────────────────────────────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppConstants.white,
@@ -156,7 +134,6 @@ abstract class AppTheme {
         ),
       ),
 
-      // ── OutlinedButton ────────────────────────────────────────────────────
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppConstants.white,
@@ -172,7 +149,6 @@ abstract class AppTheme {
         ),
       ),
 
-      // ── TextButton ────────────────────────────────────────────────────────
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppConstants.white,
@@ -180,7 +156,6 @@ abstract class AppTheme {
         ),
       ),
 
-      // ── InputDecoration ───────────────────────────────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
         border: OutlineInputBorder(
@@ -208,7 +183,6 @@ abstract class AppTheme {
         hintStyle: AppTextStyles.bodySmall,
       ),
 
-      // ── BottomNavigationBar ───────────────────────────────────────────────
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppConstants.black,
         selectedItemColor: AppConstants.white,
@@ -217,7 +191,6 @@ abstract class AppTheme {
         type: BottomNavigationBarType.fixed,
       ),
 
-      // ── NavigationBar (Material 3) ────────────────────────────────────────
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppConstants.black,
         indicatorColor: AppConstants.borderGrey,
@@ -235,7 +208,6 @@ abstract class AppTheme {
         }),
       ),
 
-      // ── ListTile ──────────────────────────────────────────────────────────
       listTileTheme: const ListTileThemeData(
         tileColor: Colors.transparent,
         iconColor: AppConstants.white,
@@ -243,7 +215,6 @@ abstract class AppTheme {
         contentPadding: EdgeInsets.symmetric(horizontal: AppConstants.spaceMD),
       ),
 
-      // ── Switch ────────────────────────────────────────────────────────────
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
@@ -259,7 +230,6 @@ abstract class AppTheme {
         }),
       ),
 
-      // ── SnackBar ──────────────────────────────────────────────────────────
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppConstants.surfaceDark,
         contentTextStyle: AppTextStyles.bodyMedium,

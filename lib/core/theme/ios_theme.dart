@@ -3,22 +3,7 @@ import 'package:flutter/services.dart';
 import 'app_brand_theme.dart';
 import 'theme_fonts.dart';
 
-/// Full [ThemeData] for the iOS / iPadOS aesthetic.
-///
-/// Palette:
-///  • Background  — iOS system background `#F2F2F7`
-///  • Surface     — `#FFFFFF` (grouped inset list cells)
-///  • Accent      — iOS blue `#007AFF`
-///  • Border      — `#C6C6C8`
-///  • Font        — Inter (downloaded via google_fonts — near-identical to
-///                  Apple's San Francisco / SF Pro in spacing and weight)
-///  • Radius      — 10–14 dp (iOS standard)
-///  • Mode        — **light** — mirrors iOS default light appearance
-///
-/// The glassmorphism look is delivered by [GlassCard], not the ThemeData
-/// itself, so it can be layered on top of any theme.
 abstract class IOSTheme {
-  // ── Palette ────────────────────────────────────────────────────────────────
   static const _blue = Color(0xFF007AFF);
   static const _bg = Color(0xFFF2F2F7);
   static const _surface = Color(0xFFFFFFFF);
@@ -142,7 +127,6 @@ abstract class IOSTheme {
       scaffoldBackgroundColor: _bg,
       textTheme: textTheme,
 
-      // ── AppBar ──────────────────────────────────────────────────────────
       appBarTheme: AppBarTheme(
         backgroundColor: _bg,
         foregroundColor: _label,
@@ -153,7 +137,6 @@ abstract class IOSTheme {
         titleTextStyle: textTheme.titleLarge,
       ),
 
-      // ── Card ────────────────────────────────────────────────────────────
       cardTheme: CardThemeData(
         color: _surface,
         elevation: 0,
@@ -164,17 +147,14 @@ abstract class IOSTheme {
         ),
       ),
 
-      // ── Divider ─────────────────────────────────────────────────────────
       dividerTheme: const DividerThemeData(
         color: _border,
         thickness: 0.5,
         space: 0,
       ),
 
-      // ── Icons ────────────────────────────────────────────────────────────
       iconTheme: const IconThemeData(color: _blue, size: 24),
 
-      // ── Buttons ──────────────────────────────────────────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: _blue,
@@ -205,7 +185,6 @@ abstract class IOSTheme {
         ),
       ),
 
-      // ── Input ────────────────────────────────────────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: _surface,
@@ -225,7 +204,6 @@ abstract class IOSTheme {
         hintStyle: textTheme.bodySmall,
       ),
 
-      // ── Navigation ───────────────────────────────────────────────────────
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: _surface.withAlpha(230),
         indicatorColor: _blue.withAlpha(30),
@@ -243,7 +221,6 @@ abstract class IOSTheme {
         }),
       ),
 
-      // ── ListTile ─────────────────────────────────────────────────────────
       listTileTheme: const ListTileThemeData(
         tileColor: _surface,
         iconColor: _blue,
@@ -251,7 +228,6 @@ abstract class IOSTheme {
         contentPadding: EdgeInsets.symmetric(horizontal: 16),
       ),
 
-      // ── Switch ───────────────────────────────────────────────────────────
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.all(Colors.white),
         trackColor: WidgetStateProperty.resolveWith(
@@ -259,7 +235,6 @@ abstract class IOSTheme {
         ),
       ),
 
-      // ── SnackBar ─────────────────────────────────────────────────────────
       snackBarTheme: SnackBarThemeData(
         backgroundColor: _surface,
         contentTextStyle: textTheme.bodyMedium,

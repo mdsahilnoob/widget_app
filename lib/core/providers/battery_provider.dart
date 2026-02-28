@@ -4,13 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/app_constants.dart';
 import 'settings_provider.dart';
 
-// ── State ─────────────────────────────────────────────────────────────────────
-
-/// Whether the simulated battery is in charging state.
 class BatteryState {
   const BatteryState({this.level = 72, this.isCharging = false});
 
-  final int level; // 0 – 100
+  final int level;
   final bool isCharging;
 
   BatteryState copyWith({int? level, bool? isCharging}) => BatteryState(
@@ -19,12 +16,6 @@ class BatteryState {
   );
 }
 
-// ── Notifier ──────────────────────────────────────────────────────────────────
-
-/// Persists the battery level and charging flag to [SharedPreferences].
-///
-/// In V1 the level is set manually (slider on the card). V2 will swap this
-/// notifier for a real [battery_plus] implementation without changing the UI.
 class BatteryNotifier extends Notifier<BatteryState> {
   late SharedPreferences _prefs;
 

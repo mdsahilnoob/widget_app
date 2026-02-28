@@ -15,7 +15,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final TextEditingController _titleCtrl;
   late final TextEditingController _subtitleCtrl;
-  // Track whether we have pre-filled the controllers from storage yet.
+
   bool _controllersSeeded = false;
 
   @override
@@ -24,9 +24,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _titleCtrl = TextEditingController();
     _subtitleCtrl = TextEditingController();
 
-    // Using listenManual so we can react inside initState (safe in Riverpod).
-    // We seed the text fields exactly once — the first time the async provider
-    // resolves with real data from SharedPreferences.
     ref.listenManual<AsyncValue<WidgetData>>(widgetDataProvider, (_, next) {
       if (!_controllersSeeded) {
         final data = next.value;
@@ -59,7 +56,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           style: textTheme.titleSmall,
         ),
         actions: [
-          // ── Theme picker ────────────────────────────────────────────────
           IconButton(
             icon: const Icon(Icons.palette_outlined),
             tooltip: 'Theme store',
@@ -73,7 +69,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               builder: (_) => const ThemePickerSheet(),
             ),
           ),
-          // ── Layout toggle ───────────────────────────────────────────────
+
           IconButton(
             icon: Icon(
               settings.widgetLayout == WidgetLayout.grid
@@ -94,13 +90,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: ListView(
         padding: const EdgeInsets.all(AppConstants.spaceMD),
         children: [
-          // ── Header ────────────────────────────────────────────────────
           Text('GOOD MORNING.', style: textTheme.displayMedium),
           const SizedBox(height: AppConstants.spaceSM),
           Text('Here\'s your widget dashboard.', style: textTheme.bodyMedium),
           const SizedBox(height: AppConstants.spaceLG),
 
-          // ── Widget Bridge panel ───────────────────────────────────────
           Text('WIDGET BRIDGE', style: textTheme.titleSmall),
           const SizedBox(height: AppConstants.spaceMD),
           widgetAsync.when(
@@ -134,7 +128,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           const SizedBox(height: AppConstants.spaceLG),
 
-          // ── Status cards ──────────────────────────────────────────────
           _StatusCard(
             label: 'LAYOUT',
             value: settings.widgetLayout == WidgetLayout.grid ? 'GRID' : 'LIST',
@@ -144,7 +137,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           const SizedBox(height: AppConstants.spaceLG),
 
-          // ── Preferences ───────────────────────────────────────────────
           Text('PREFERENCES', style: textTheme.titleSmall),
           const SizedBox(height: AppConstants.spaceSM),
           _SettingsTile(
@@ -169,13 +161,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-// ── Sub-widgets ───────────────────────────────────────────────────────────────
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Bridge panel
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// The main control panel that lets the user edit the home screen widget data.
 class _BridgePanel extends StatelessWidget {
   const _BridgePanel({
     required this.data,
@@ -210,7 +195,6 @@ class _BridgePanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Sync status bar ──────────────────────────────────────────
           _SyncStatusBar(isSyncing: data.isSyncing, error: data.lastError),
 
           Padding(
@@ -218,7 +202,6 @@ class _BridgePanel extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Title field ────────────────────────────────────────
                 Text('WIDGET TITLE', style: textTheme.labelSmall),
                 const SizedBox(height: AppConstants.spaceSM),
                 Row(
@@ -241,7 +224,6 @@ class _BridgePanel extends StatelessWidget {
 
                 const SizedBox(height: AppConstants.spaceMD),
 
-                // ── Subtitle field ─────────────────────────────────────
                 Text('WIDGET SUBTITLE', style: textTheme.labelSmall),
                 const SizedBox(height: AppConstants.spaceSM),
                 Row(
@@ -265,22 +247,18 @@ class _BridgePanel extends StatelessWidget {
                 const Divider(),
                 const SizedBox(height: AppConstants.spaceMD),
 
-                // ── Counter control ────────────────────────────────────
                 Text('COUNTER', style: textTheme.labelSmall),
                 const SizedBox(height: AppConstants.spaceSM),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Decrement
                     _CounterButton(icon: Icons.remove, onTap: onDecrement),
 
-                    // Value display
                     Text(
                       data.counter.toString().padLeft(2, '0'),
                       style: textTheme.headlineLarge,
                     ),
 
-                    // Increment
                     _CounterButton(icon: Icons.add, onTap: onIncrement),
                   ],
                 ),
@@ -305,7 +283,6 @@ class _BridgePanel extends StatelessWidget {
   }
 }
 
-/// Thin top bar inside the bridge panel showing sync state.
 class _SyncStatusBar extends StatelessWidget {
   const _SyncStatusBar({required this.isSyncing, this.error});
   final bool isSyncing;
@@ -370,7 +347,6 @@ class _SyncStatusBar extends StatelessWidget {
   }
 }
 
-/// A minimal outlined "PUSH" button.
 class _PushButton extends StatelessWidget {
   const _PushButton({required this.label, required this.onTap});
   final String label;
@@ -398,7 +374,6 @@ class _PushButton extends StatelessWidget {
   }
 }
 
-/// A square counter +/- button.
 class _CounterButton extends StatelessWidget {
   const _CounterButton({required this.icon, required this.onTap});
   final IconData icon;
@@ -472,10 +447,6 @@ class _BridgeError extends StatelessWidget {
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Shared status / settings widgets
-// ─────────────────────────────────────────────────────────────────────────────
 
 class _StatusCard extends StatelessWidget {
   const _StatusCard({

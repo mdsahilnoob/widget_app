@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
 
-/// Central text-style definitions for the Nothing OS aesthetic.
-///
-/// Nothing OS uses a monospaced / dotmatrix feel with extreme letter-spacing
-/// and very explicit weight contrast. We replicate this with [RobotoMono]
-/// as a fallback until the real [NothingFont] TTF assets land in
-/// assets/fonts/.
 abstract class AppTextStyles {
   static const _fontFamilyFallback = [AppConstants.fontFamilyFallback];
 
-  // ── Display ──────────────────────────────────────────────────────────────
   static const TextStyle displayLarge = TextStyle(
     fontFamily: AppConstants.fontFamily,
     fontFamilyFallback: _fontFamilyFallback,
@@ -31,7 +24,6 @@ abstract class AppTextStyles {
     height: 1.15,
   );
 
-  // ── Headline ─────────────────────────────────────────────────────────────
   static const TextStyle headlineLarge = TextStyle(
     fontFamily: AppConstants.fontFamily,
     fontFamilyFallback: _fontFamilyFallback,
@@ -50,7 +42,6 @@ abstract class AppTextStyles {
     color: AppConstants.white,
   );
 
-  // ── Title ─────────────────────────────────────────────────────────────────
   static const TextStyle titleLarge = TextStyle(
     fontFamily: AppConstants.fontFamily,
     fontFamilyFallback: _fontFamilyFallback,
@@ -69,7 +60,6 @@ abstract class AppTextStyles {
     color: AppConstants.white,
   );
 
-  // ── Body ──────────────────────────────────────────────────────────────────
   static const TextStyle bodyLarge = TextStyle(
     fontFamily: AppConstants.fontFamily,
     fontFamilyFallback: _fontFamilyFallback,
@@ -99,8 +89,6 @@ abstract class AppTextStyles {
     color: AppConstants.whiteSubtle,
   );
 
-  // ── Label ─────────────────────────────────────────────────────────────────
-  /// Used for tags, chips, badges — uppercase tracking is key.
   static const TextStyle labelLarge = TextStyle(
     fontFamily: AppConstants.fontFamily,
     fontFamilyFallback: _fontFamilyFallback,

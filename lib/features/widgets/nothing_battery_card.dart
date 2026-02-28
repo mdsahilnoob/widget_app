@@ -5,17 +5,6 @@ import '../../core/constants/app_constants.dart';
 import '../../core/providers/battery_provider.dart';
 import '../../core/widgets/dot_matrix_display.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Nothing Battery Level Widget Card
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// Displays the current battery level as a Nothing OS style indicator.
-///
-/// Features:
-///  • Custom [_BatteryShapePainter] draws a segmented battery outline.
-///  • Dot-matrix percentage readout.
-///  • Charging toggle + level slider (V1 simulation; replace provider in V2
-///    with [battery_plus] without touching this widget).
 class NothingBatteryCard extends ConsumerWidget {
   const NothingBatteryCard({super.key});
 
@@ -41,15 +30,12 @@ class NothingBatteryCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Tag ──────────────────────────────────────────────────────────
           _TagPill(label: battery.isCharging ? 'BATTERY  ⚡' : 'BATTERY'),
           const SizedBox(height: AppConstants.spaceMD),
 
-          // ── Visual + readout row ──────────────────────────────────────────
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Battery shape painter
               CustomPaint(
                 size: const Size(110, 50),
                 painter: _BatteryShapePainter(
@@ -59,7 +45,7 @@ class NothingBatteryCard extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: AppConstants.spaceLG),
-              // Dot-matrix percentage
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -87,7 +73,6 @@ class NothingBatteryCard extends ConsumerWidget {
           const Divider(),
           const SizedBox(height: AppConstants.spaceSM),
 
-          // ── Status label ─────────────────────────────────────────────────
           Text(
             _statusLabel(battery.level, battery.isCharging),
             style: Theme.of(
@@ -96,7 +81,6 @@ class NothingBatteryCard extends ConsumerWidget {
           ),
           const SizedBox(height: AppConstants.spaceMD),
 
-          // ── Slider ───────────────────────────────────────────────────────
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               trackHeight: 1,
@@ -116,7 +100,6 @@ class NothingBatteryCard extends ConsumerWidget {
             ),
           ),
 
-          // ── Charging toggle ───────────────────────────────────────────────
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -146,15 +129,6 @@ class NothingBatteryCard extends ConsumerWidget {
   }
 }
 
-// ── Battery painter ───────────────────────────────────────────────────────────
-
-/// Draws a segmented battery outline that illustrates [level] (0–100).
-///
-/// Design:
-///  • Main body outline with 1 dp stroke.
-///  • 10 inner segments filled proportionally to [level].
-///  • Positive terminal nub on the right side.
-///  • Charging bolt symbol when [isCharging] is true.
 class _BatteryShapePainter extends CustomPainter {
   const _BatteryShapePainter({
     required this.level,
@@ -182,14 +156,12 @@ class _BatteryShapePainter extends CustomPainter {
       const Radius.circular(_radius),
     );
 
-    // ── Outline ───────────────────────────────────────────────────────────
     final outlinePaint = Paint()
       ..color = AppConstants.borderGreyLight
       ..style = PaintingStyle.stroke
       ..strokeWidth = _stroke;
     canvas.drawRRect(bodyRect, outlinePaint);
 
-    // ── Positive terminal nub ──────────────────────────────────────────────
     final nubTop = (bodyH - _nubHeight) / 2;
     final nubRect = RRect.fromRectAndRadius(
       Rect.fromLTWH(bodyW, nubTop, _nubWidth, _nubHeight),
@@ -197,7 +169,6 @@ class _BatteryShapePainter extends CustomPainter {
     );
     canvas.drawRRect(nubRect, outlinePaint);
 
-    // ── Segments ───────────────────────────────────────────────────────────
     const padding = 6.0;
     final innerW = bodyW - padding * 2;
     final innerH = bodyH - padding * 2;
@@ -221,9 +192,7 @@ class _BatteryShapePainter extends CustomPainter {
       canvas.drawRRect(segRect, i < filledSegs ? filledPaint : dimPaint);
     }
 
-    // ── Charging bolt ──────────────────────────────────────────────────────
     if (isCharging) {
-      // Use black on lit segments (≥1 segment filled), white on dark background.
       final boltColor = filledSegs > 0
           ? AppConstants.black
           : AppConstants.white;
@@ -251,8 +220,6 @@ class _BatteryShapePainter extends CustomPainter {
       old.isCharging != isCharging ||
       old.accentColor != accentColor;
 }
-
-// ── Tag pill (shared) ─────────────────────────────────────────────────────────
 
 class _TagPill extends StatelessWidget {
   const _TagPill({required this.label});

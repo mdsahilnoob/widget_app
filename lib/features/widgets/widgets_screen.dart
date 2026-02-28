@@ -6,18 +6,6 @@ import 'nothing_clock_card.dart';
 import 'nothing_battery_card.dart';
 import 'nothing_quick_note_card.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Widgets Screen — V1 Widget Library
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// Houses the V1 Nothing OS widget library:
-///   1. Digital Clock     — dot-matrix, second-accurate, blinking colon
-///   2. Battery Level     — custom segmented painter + dot-matrix readout
-///   3. Quick Note        — editable, persisted, synced to home screen widget
-///
-/// The layout toggle (grid ↔ list) switches between two layout modes:
-///   • Grid  — 2-column grid with compact square preview tiles.
-///   • List  — full-width stacked cards showing full widget detail.
 class WidgetsScreen extends ConsumerWidget {
   const WidgetsScreen({super.key});
 
@@ -30,7 +18,6 @@ class WidgetsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text('WIDGETS', style: textTheme.titleSmall),
         actions: [
-          // Layout mode indicator badge
           Padding(
             padding: const EdgeInsets.only(right: AppConstants.spaceMD),
             child: _LayoutBadge(layout: layout),
@@ -44,10 +31,6 @@ class WidgetsScreen extends ConsumerWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// List layout — full detail cards stacked vertically
-// ─────────────────────────────────────────────────────────────────────────────
-
 class _ListView extends StatelessWidget {
   const _ListView({required this.textTheme});
   final TextTheme textTheme;
@@ -60,29 +43,21 @@ class _ListView extends StatelessWidget {
         _SectionHeader(label: 'V1  •  NOTHING UI', textTheme: textTheme),
         const SizedBox(height: AppConstants.spaceMD),
 
-        // ── 1. Digital Clock ───────────────────────────────────────────────
         const NothingClockCard(),
         const SizedBox(height: AppConstants.spaceMD),
 
-        // ── 2. Battery Level ───────────────────────────────────────────────
         const NothingBatteryCard(),
         const SizedBox(height: AppConstants.spaceMD),
 
-        // ── 3. Quick Note ──────────────────────────────────────────────────
         const NothingQuickNoteCard(),
         const SizedBox(height: AppConstants.spaceLG),
 
-        // ── Coming soon footer ─────────────────────────────────────────────
         _ComingSoonFooter(textTheme: textTheme),
         const SizedBox(height: AppConstants.spaceMD),
       ],
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Grid layout — compact 2-column preview tiles
-// ─────────────────────────────────────────────────────────────────────────────
 
 class _GridView extends StatelessWidget {
   const _GridView({required this.textTheme});
@@ -105,7 +80,6 @@ class _GridView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppConstants.spaceMD),
           sliver: SliverGrid(
             delegate: SliverChildListDelegate([
-              // Clock tile spans full width (2 columns).
               const _GridTile(
                 tag: 'CLOCK',
                 icon: Icons.access_time_rounded,
@@ -141,10 +115,6 @@ class _GridView extends StatelessWidget {
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Shared sub-widgets
-// ─────────────────────────────────────────────────────────────────────────────
 
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({required this.label, required this.textTheme});
