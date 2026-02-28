@@ -41,49 +41,15 @@ class _NotesScreenState extends State<NotesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Custom Header
-              Padding(
-                padding: const EdgeInsets.fromLTRB(28, 48, 28, 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'My Notes',
-                          style: Theme.of(context).textTheme.displaySmall
-                              ?.copyWith(
-                                fontWeight: FontWeight.w900,
-                                color: const Color(0xFF1E212B),
-                                letterSpacing: -1,
-                              ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Capture your brilliant thoughts',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Colors.black45,
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ],
-                    ),
-                    _buildAddButton(context),
-                  ],
-                ),
-              ),
-
-              // Search Bar
+              const _NotesHeader(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: _buildSearchBar(),
+                child: _SearchBar(
+                  controller: _searchController,
+                  onChanged: (val) => setState(() => _searchQuery = val),
+                ),
               ),
-
               const SizedBox(height: 16),
-
-              // Notes List/Grid
               Expanded(
                 child: StreamBuilder<List<Note>>(
                   stream: isar.notes.where().sortByTimestampDesc().watch(
@@ -96,23 +62,19 @@ class _NotesScreenState extends State<NotesScreen> {
 
                     var notes = snapshot.data ?? [];
 
-                    // Filtering
                     if (_searchQuery.isNotEmpty) {
+                      final query = _searchQuery.toLowerCase();
                       notes = notes
                           .where(
                             (note) =>
-                                note.title.toLowerCase().contains(
-                                  _searchQuery.toLowerCase(),
-                                ) ||
-                                note.content.toLowerCase().contains(
-                                  _searchQuery.toLowerCase(),
-                                ),
+                                note.title.toLowerCase().contains(query) ||
+                                note.content.toLowerCase().contains(query),
                           )
                           .toList();
                     }
 
                     if (notes.isEmpty) {
-                      return _buildEmptyState();
+                      return const _EmptyNotesState();
                     }
 
                     return Padding(
@@ -126,7 +88,7 @@ class _NotesScreenState extends State<NotesScreen> {
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           final note = notes[index];
-                          return _buildNoteCard(note);
+                          return NoteCard(note: note);
                         },
                       ),
                     );
@@ -139,48 +101,51 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
     );
   }
+}
 
-  Widget _buildSearchBar() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.4),
-              width: 1.5,
-            ),
+class _NotesHeader extends StatelessWidget {
+  const _NotesHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(28, 48, 28, 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'My Notes',
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: const Color(0xFF1E212B),
+                  letterSpacing: -1,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Capture your brilliant thoughts',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.black45,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
-          child: TextField(
-            controller: _searchController,
-            onChanged: (val) => setState(() => _searchQuery = val),
-            decoration: const InputDecoration(
-              hintText: 'Search your notes...',
-              hintStyle: TextStyle(
-                color: Colors.black26,
-                fontWeight: FontWeight.w500,
-              ),
-              prefixIcon: Icon(
-                LucideIcons.search,
-                size: 20,
-                color: Colors.black45,
-              ),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 16,
-                horizontal: 20,
-              ),
-            ),
-          ),
-        ),
+          const _AddButton(),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildAddButton(BuildContext context) {
+class _AddButton extends StatelessWidget {
+  const _AddButton();
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -203,8 +168,63 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
     );
   }
+}
 
-  Widget _buildNoteCard(Note note) {
+class _SearchBar extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  const _SearchBar({required this.controller, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.4),
+              width: 1.5,
+            ),
+          ),
+          child: TextField(
+            controller: controller,
+            onChanged: onChanged,
+            decoration: const InputDecoration(
+              hintText: 'Search your notes...',
+              hintStyle: TextStyle(
+                color: Colors.black26,
+                fontWeight: FontWeight.w500,
+              ),
+              prefixIcon: Icon(
+                LucideIcons.search,
+                size: 20,
+                color: Colors.black45,
+              ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 20,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NoteCard extends StatelessWidget {
+  final Note note;
+
+  const NoteCard({super.key, required this.note});
+
+  @override
+  Widget build(BuildContext context) {
     final noteColor = Color(note.color);
 
     return GestureDetector(
@@ -297,14 +317,19 @@ class _NotesScreenState extends State<NotesScreen> {
     ];
     return '${dt.day} ${monthNames[dt.month]}';
   }
+}
 
-  Widget _buildEmptyState() {
+class _EmptyNotesState extends StatelessWidget {
+  const _EmptyNotesState();
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const [
           Icon(LucideIcons.stickyNote, size: 80, color: Colors.black12),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Text(
             'Your space is empty',
             style: TextStyle(
@@ -313,7 +338,7 @@ class _NotesScreenState extends State<NotesScreen> {
               color: Colors.black26,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             'Tap + to create your first note',
             style: TextStyle(color: Colors.black26),

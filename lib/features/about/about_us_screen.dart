@@ -30,43 +30,17 @@ class AboutUsScreen extends StatelessWidget {
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 48, 28, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'About App',
-                        style: Theme.of(context).textTheme.displaySmall
-                            ?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              color: const Color(0xFF1E212B),
-                              letterSpacing: -1,
-                            ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Learn more about your companion',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.black45,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const _AboutHeader(),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 sliver: SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      _buildHeaderCard(context),
+                      const _AppHeaderCard(),
                       const SizedBox(height: 20),
-                      _buildDeveloperProfile(context),
+                      _DeveloperProfile(launchUrl: _launchUrl),
                       const SizedBox(height: 20),
-                      _buildFeaturesSection(context),
+                      const _FeaturesSection(),
                       const SizedBox(height: 20),
                       GridView.count(
                         shrinkWrap: true,
@@ -76,7 +50,7 @@ class AboutUsScreen extends StatelessWidget {
                         crossAxisSpacing: 16,
                         childAspectRatio: 0.9,
                         children: [
-                          _buildBentoCard(
+                          _BentoCard(
                             icon: LucideIcons.globe,
                             title: 'Website',
                             subtitle: 'mdsahil.me',
@@ -85,7 +59,7 @@ class AboutUsScreen extends StatelessWidget {
                             ).withValues(alpha: 0.7),
                             onTap: () => _launchUrl('https://mdsahil.me'),
                           ),
-                          _buildBentoCard(
+                          _BentoCard(
                             icon: LucideIcons.github,
                             title: 'GitHub',
                             subtitle: '@mdsahilnoob',
@@ -95,7 +69,7 @@ class AboutUsScreen extends StatelessWidget {
                             onTap: () =>
                                 _launchUrl('https://github.com/mdsahilnoob'),
                           ),
-                          _buildBentoCard(
+                          _BentoCard(
                             icon: LucideIcons.heart,
                             title: 'Donate',
                             subtitle: 'Support us',
@@ -104,7 +78,7 @@ class AboutUsScreen extends StatelessWidget {
                             ).withValues(alpha: 0.7),
                             onTap: () {},
                           ),
-                          _buildBentoCard(
+                          _BentoCard(
                             icon: LucideIcons.mail,
                             title: 'Contact',
                             subtitle: 'Get in touch',
@@ -116,7 +90,7 @@ class AboutUsScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      _buildTechStackCard(context),
+                      const _TechStackCard(),
                       const SizedBox(height: 40),
                       const Text(
                         'Made with ❤️ for students',
@@ -137,8 +111,47 @@ class AboutUsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildHeaderCard(BuildContext context) {
+class _AboutHeader extends StatelessWidget {
+  const _AboutHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(28, 48, 28, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'About App',
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.w900,
+                color: const Color(0xFF1E212B),
+                letterSpacing: -1,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Learn more about your companion',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.black45,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AppHeaderCard extends StatelessWidget {
+  const _AppHeaderCard();
+
+  @override
+  Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(32),
       child: BackdropFilter(
@@ -202,8 +215,15 @@ class AboutUsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildDeveloperProfile(BuildContext context) {
+class _DeveloperProfile extends StatelessWidget {
+  final Future<void> Function(String) launchUrl;
+
+  const _DeveloperProfile({required this.launchUrl});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -222,7 +242,7 @@ class AboutUsScreen extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: const DecorationImage(
-                image: AssetImage('assets/images/logo.png'),
+                image: AssetImage('assets/images/logo2.png'),
                 fit: BoxFit.cover,
               ),
               boxShadow: [
@@ -258,14 +278,14 @@ class AboutUsScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    _buildSocialIcon(
-                      LucideIcons.globe,
-                      () => _launchUrl('https://mdsahil.me'),
+                    _SocialIcon(
+                      icon: LucideIcons.globe,
+                      onTap: () => launchUrl('https://mdsahil.me'),
                     ),
                     const SizedBox(width: 12),
-                    _buildSocialIcon(
-                      LucideIcons.github,
-                      () => _launchUrl('https://github.com/mdsahilnoob'),
+                    _SocialIcon(
+                      icon: LucideIcons.github,
+                      onTap: () => launchUrl('https://github.com/mdsahilnoob'),
                     ),
                   ],
                 ),
@@ -276,8 +296,16 @@ class AboutUsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildSocialIcon(IconData icon, VoidCallback onTap) {
+class _SocialIcon extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _SocialIcon({required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -290,8 +318,13 @@ class AboutUsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildFeaturesSection(BuildContext context) {
+class _FeaturesSection extends StatelessWidget {
+  const _FeaturesSection();
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -305,8 +338,8 @@ class AboutUsScreen extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
+        children: const [
+          Text(
             'App Features',
             style: TextStyle(
               fontWeight: FontWeight.w800,
@@ -314,30 +347,43 @@ class AboutUsScreen extends StatelessWidget {
               color: Color(0xFF1E212B),
             ),
           ),
-          const SizedBox(height: 16),
-          _buildFeatureItem(
-            LucideIcons.calendar,
-            'Smart Timetable',
-            'Organize your classes with ease.',
+          SizedBox(height: 16),
+          _FeatureItem(
+            icon: LucideIcons.calendar,
+            title: 'Smart Timetable',
+            desc: 'Organize your classes with ease.',
           ),
-          const SizedBox(height: 12),
-          _buildFeatureItem(
-            LucideIcons.stickyNote,
-            'Quick Notes',
-            'Capture thoughts with our new editor.',
+          SizedBox(height: 12),
+          _FeatureItem(
+            icon: LucideIcons.stickyNote,
+            title: 'Quick Notes',
+            desc: 'Capture thoughts with our new editor.',
           ),
-          const SizedBox(height: 12),
-          _buildFeatureItem(
-            LucideIcons.layout,
-            'Bento UI',
-            'Modern design inspired by Nothing OS.',
+          SizedBox(height: 12),
+          _FeatureItem(
+            icon: LucideIcons.layout,
+            title: 'Bento UI',
+            desc: 'Modern design inspired by Nothing OS.',
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildFeatureItem(IconData icon, String title, String desc) {
+class _FeatureItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String desc;
+
+  const _FeatureItem({
+    required this.icon,
+    required this.title,
+    required this.desc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Icon(icon, size: 20, color: const Color(0xFF2DD4BF)),
@@ -358,67 +404,77 @@ class AboutUsScreen extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildBentoCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color bgColor,
-    required VoidCallback onTap,
-  }) {
+class _BentoCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color bgColor;
+  final VoidCallback onTap;
+
+  const _BentoCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.bgColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(28),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
-                width: 1.5,
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.3),
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 20, color: const Color(0xFF1E212B)),
+            ),
+            const Spacer(),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
+                color: Color(0xFF1E212B),
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(icon, size: 20, color: const Color(0xFF1E212B)),
-                ),
-                const Spacer(),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                    color: Color(0xFF1E212B),
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1E212B).withValues(alpha: 0.5),
-                  ),
-                ),
-              ],
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF1E212B).withValues(alpha: 0.5),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildTechStackCard(BuildContext context) {
+class _TechStackCard extends StatelessWidget {
+  const _TechStackCard();
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -445,21 +501,28 @@ class AboutUsScreen extends StatelessWidget {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: [
-              _buildTechChip('Flutter'),
-              _buildTechChip('Dart'),
-              _buildTechChip('Isar DB'),
-              _buildTechChip('Glassmorphism'),
-              _buildTechChip('Bento Design'),
-              _buildTechChip('Lucide Icons'),
+            children: const [
+              _TechChip(label: 'Flutter'),
+              _TechChip(label: 'Dart'),
+              _TechChip(label: 'Isar DB'),
+              _TechChip(label: 'Glassmorphism'),
+              _TechChip(label: 'Bento Design'),
+              _TechChip(label: 'Lucide Icons'),
             ],
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildTechChip(String label) {
+class _TechChip extends StatelessWidget {
+  final String label;
+
+  const _TechChip({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(

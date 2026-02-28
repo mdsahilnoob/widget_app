@@ -82,6 +82,7 @@ flutter:
   assets:
     - assets/fonts/
     - assets/images/
+    - assets/images/logo2.png
 
   # ── Custom font (Nothing OS inspired) ────────────────────────────────────
   # Uncomment and add the actual .ttf files to assets/fonts/ to activate.
