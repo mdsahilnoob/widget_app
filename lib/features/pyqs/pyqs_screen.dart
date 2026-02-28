@@ -36,18 +36,27 @@ class PyqsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Previous Year Questions')),
       body: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         itemCount: semesters.length,
         itemBuilder: (context, index) {
           final semester = semesters.keys.elementAt(index);
           final subjects = semesters[semester]!;
 
           return ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
             title: Text(
               semester,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             children: subjects.map((subject) {
               return ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 8.0,
+                ),
                 leading: const Icon(
                   Icons.picture_as_pdf,
                   color: Colors.redAccent,

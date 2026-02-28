@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import '../../core/models/class_session.dart';
+import '../../main.dart';
 
 class DailyClassesScreen extends StatelessWidget {
   const DailyClassesScreen({super.key});
@@ -49,65 +51,87 @@ class _DayScheduleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch from Isar Database based on 'day'
-    final List<ClassSession> classes = []; 
+    return StreamBuilder<List<ClassSession>>(
+      stream: isar.classSessions
+          .filter()
+          .dayOfWeekEqualTo(day)
+          .watch(fireImmediately: true),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    if (classes.isEmpty) {
-      return Center(
-        child: Text(
-          'No classes scheduled',
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-      );
-    }
+        final classes = snapshot.data ?? [];
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemCount: classes.length,
-      itemBuilder: (context, index) {
-        final session = classes[index];
-        final startTimeStr = '${session.startTime.hour.toString().padLeft(2, '0')}:${session.startTime.minute.toString().padLeft(2, '0')}';
-        final endTimeStr = '${session.endTime.hour.toString().padLeft(2, '0')}:${session.endTime.minute.toString().padLeft(2, '0')}';
-
-        return Card(
-          elevation: 2, // Material 3 Elevated Card style
-          margin: const EdgeInsets.only(bottom: 12.0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(16.0),
-            leading: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(startTimeStr, style: const TextStyle(fontWeight: FontWeight.bold)),
-                const Text('to'),
-                Text(endTimeStr),
-              ],
+        if (classes.isEmpty) {
+          return Center(
+            child: Text(
+              'No classes scheduled',
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            title: Text(
-              session.title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 4),
-                Row(
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16.0),
+          itemCount: classes.length,
+          itemBuilder: (context, index) {
+            final session = classes[index];
+            final startTimeStr =
+                '${session.startTime.hour.toString().padLeft(2, '0')}:${session.startTime.minute.toString().padLeft(2, '0')}';
+            final endTimeStr =
+                '${session.endTime.hour.toString().padLeft(2, '0')}:${session.endTime.minute.toString().padLeft(2, '0')}';
+
+            return Card(
+              elevation: 2, // Material 3 Elevated Card style
+              margin: const EdgeInsets.only(bottom: 16.0),
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(16.0),
+                leading: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.room, size: 16),
-                    const SizedBox(width: 4),
-                    Text(session.room),
+                    Text(
+                      startTimeStr,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const Text('to'),
+                    Text(endTimeStr),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.person, size: 16),
-                    const SizedBox(width: 4),
-                    Text(session.lecturer),
-                  ],
+                title: Text(
+                  session.title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ],
-            ),
-          ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Wrap(
+                    spacing: 16.0,
+                    runSpacing: 8.0,
+                    children: [
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          const Icon(Icons.room, size: 16),
+                          const SizedBox(width: 8.0),
+                          Text(session.room),
+                        ],
+                      ),
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          const Icon(Icons.person, size: 16),
+                          const SizedBox(width: 8.0),
+                          Text(session.lecturer),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     );

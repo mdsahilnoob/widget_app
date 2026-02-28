@@ -5,19 +5,24 @@ import 'package:path_provider/path_provider.dart';
 import 'core/models/academic_event.dart';
 import 'core/models/class_session.dart';
 import 'core/models/note.dart';
+import 'core/services/demo_data.dart';
 import 'features/navigation/app_navigation.dart';
 
 late Isar isar;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Isar DB
   final dir = await getApplicationDocumentsDirectory();
-  isar = await Isar.open(
-    [ClassSessionSchema, NoteSchema, AcademicEventSchema],
-    directory: dir.path,
-  );
+  isar = await Isar.open([
+    ClassSessionSchema,
+    NoteSchema,
+    AcademicEventSchema,
+  ], directory: dir.path);
+
+  // Initialize Demo Data
+  await DemoDataInitializer.initializeIfNeeded();
 
   runApp(const UniversityTimetableApp());
 }
@@ -37,6 +42,7 @@ class UniversityTimetableApp extends StatelessWidget {
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
+        scaffoldBackgroundColor: Colors.black, // True Black Dark Theme
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF007AFF),
           brightness: Brightness.dark,
