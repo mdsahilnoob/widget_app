@@ -252,8 +252,9 @@ class NotesScreen extends StatelessWidget {
                   ),
                   onPressed: () async {
                     if (titleController.text.trim().isEmpty ||
-                        contentController.text.trim().isEmpty)
+                        contentController.text.trim().isEmpty) {
                       return;
+                    }
 
                     final newNote = Note()
                       ..title = titleController.text.trim()
@@ -265,7 +266,9 @@ class NotesScreen extends StatelessWidget {
                       await isar.notes.put(newNote);
                     });
 
-                    if (context.mounted) Navigator.pop(context);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
                   },
                   child: const Text(
                     'Save Note',
