@@ -179,6 +179,105 @@ class NotesScreen extends StatelessWidget {
   }
 
   void _showAddNoteDialog(BuildContext context) {
-    // Keep backend saving blank for aesthetic UI review
+    final titleController = TextEditingController();
+    final contentController = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Color(0xFFF0FDF4),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(32),
+            ),
+          ),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 24.0,
+            right: 24.0,
+            top: 24.0,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Add New Note',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF1E212B),
+                ),
+              ),
+              const SizedBox(height: 24.0),
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  filled: true,
+                  fillColor: Colors.white.withValues(alpha: 0.6),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: contentController,
+                decoration: InputDecoration(
+                  labelText: 'Content snippet...',
+                  filled: true,
+                  fillColor: Colors.white.withValues(alpha: 0.6),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                maxLines: 5,
+              ),
+              const SizedBox(height: 24.0),
+              SizedBox(
+                width: double.infinity,
+                height: 56.0,
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFF2DD4BF),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (titleController.text.trim().isEmpty ||
+                        contentController.text.trim().isEmpty)
+                      return;
+
+                    final newNote = Note()
+                      ..title = titleController.text.trim()
+                      ..content = contentController.text.trim()
+                      ..timestamp = DateTime.now()
+                      ..color = 0xFFCBECE8; // Default mint glass color
+
+                    await isar.writeTxn(() async {
+                      await isar.notes.put(newNote);
+                    });
+
+                    if (context.mounted) Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Save Note',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24.0),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
