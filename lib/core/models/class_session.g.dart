@@ -59,7 +59,7 @@ const ClassSessionSchema = CollectionSchema(
   getId: _classSessionGetId,
   getLinks: _classSessionGetLinks,
   attach: _classSessionAttach,
-  version: '3.1.0',
+  version: '3.1.0+1',
 );
 
 int _classSessionEstimateSize(

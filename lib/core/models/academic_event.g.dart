@@ -45,7 +45,7 @@ const AcademicEventSchema = CollectionSchema(
   getId: _academicEventGetId,
   getLinks: _academicEventGetLinks,
   attach: _academicEventAttach,
-  version: '3.1.0',
+  version: '3.1.0+1',
 );
 
 int _academicEventEstimateSize(

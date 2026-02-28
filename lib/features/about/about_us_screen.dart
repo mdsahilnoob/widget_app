@@ -195,7 +195,7 @@ class _AppHeaderCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Text(
-              'v1.0.0',
+              'v2.0.0',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 11,
