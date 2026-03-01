@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../../core/models/academic_event.dart';
-import '../../main.dart';
 
 class AcademicCalendarScreen extends StatelessWidget {
   const AcademicCalendarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<AcademicEvent>>(
-      stream: isar.academicEvents.where().watch(fireImmediately: true),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        final events = snapshot.data ?? [];
+    return ValueListenableBuilder(
+      valueListenable: Hive.box<AcademicEvent>('academic_events').listenable(),
+      builder: (context, box, _) {
+        final events = box.values.toList();
 
         return Scaffold(
           appBar: AppBar(title: const Text('Academic Calendar')),

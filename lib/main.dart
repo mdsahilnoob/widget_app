@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,18 +9,19 @@ import 'core/models/note.dart';
 import 'core/services/demo_data.dart';
 import 'features/onboarding/onboarding_screen.dart';
 
-late Isar isar;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Isar DB
-  final dir = await getApplicationDocumentsDirectory();
-  isar = await Isar.open([
-    ClassSessionSchema,
-    NoteSchema,
-    AcademicEventSchema,
-  ], directory: dir.path);
+  // Initialize Hive DB
+  await Hive.initFlutter();
+  Hive.registerAdapter(ClassSessionAdapter());
+  Hive.registerAdapter(NoteAdapter());
+  Hive.registerAdapter(AcademicEventAdapter());
+  Hive.registerAdapter(EventTypeAdapter());
+
+  await Hive.openBox<ClassSession>('class_sessions');
+  await Hive.openBox<Note>('notes');
+  await Hive.openBox<AcademicEvent>('academic_events');
 
   // Initialize Demo Data
   await DemoDataInitializer.initializeIfNeeded();

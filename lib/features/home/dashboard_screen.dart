@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../core/models/academic_event.dart';
 import '../../core/models/class_session.dart';
-import '../../main.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -251,20 +250,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                  StreamBuilder<List<ClassSession>>(
-                    stream: isar.classSessions
-                        .filter()
-                        .dayOfWeekEqualTo(todayWeekday)
-                        .sortByStartTime()
-                        .watch(fireImmediately: true),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SliverToBoxAdapter(
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-
-                      final classes = snapshot.data ?? [];
+                  ValueListenableBuilder(
+                    valueListenable: Hive.box<ClassSession>(
+                      'class_sessions',
+                    ).listenable(),
+                    builder: (context, box, _) {
+                      final classes =
+                          box.values
+                              .where((c) => c.dayOfWeek == todayWeekday)
+                              .toList()
+                            ..sort(
+                              (a, b) => a.startTime.compareTo(b.startTime),
+                            );
 
                       if (classes.isEmpty) {
                         return const SliverToBoxAdapter(
@@ -338,16 +335,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  StreamBuilder<List<AcademicEvent>>(
-                    stream: isar.academicEvents.where().sortByDate().watch(
-                      fireImmediately: true,
-                    ),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SliverToBoxAdapter(child: SizedBox());
-                      }
-
-                      var events = snapshot.data ?? [];
+                  ValueListenableBuilder(
+                    valueListenable: Hive.box<AcademicEvent>(
+                      'academic_events',
+                    ).listenable(),
+                    builder: (context, box, _) {
+                      var events = box.values.toList()
+                        ..sort((a, b) => a.date.compareTo(b.date));
 
                       if (filter == 'Exams') {
                         events = events

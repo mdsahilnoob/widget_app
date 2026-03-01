@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/models/class_session.dart';
-import '../../main.dart';
 
 class TimetableScreen extends StatefulWidget {
   const TimetableScreen({super.key});
@@ -49,18 +48,16 @@ class _TimetableScreenState extends State<TimetableScreen> {
               ),
               const SizedBox(height: 32),
               Expanded(
-                child: StreamBuilder<List<ClassSession>>(
-                  stream: isar.classSessions
-                      .filter()
-                      .dayOfWeekEqualTo(_selectedDay)
-                      .sortByStartTime()
-                      .watch(fireImmediately: true),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    final classes = snapshot.data ?? [];
+                child: ValueListenableBuilder(
+                  valueListenable: Hive.box<ClassSession>(
+                    'class_sessions',
+                  ).listenable(),
+                  builder: (context, box, _) {
+                    final classes =
+                        box.values
+                            .where((c) => c.dayOfWeek == _selectedDay)
+                            .toList()
+                          ..sort((a, b) => a.startTime.compareTo(b.startTime));
 
                     if (classes.isEmpty) {
                       return const _EmptyTimetableState();

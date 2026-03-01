@@ -1,10 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../core/models/note.dart';
-import '../../main.dart';
 import 'note_editor_screen.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -51,16 +50,11 @@ class _NotesScreenState extends State<NotesScreen> {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: StreamBuilder<List<Note>>(
-                  stream: isar.notes.where().sortByTimestampDesc().watch(
-                    fireImmediately: true,
-                  ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    var notes = snapshot.data ?? [];
+                child: ValueListenableBuilder(
+                  valueListenable: Hive.box<Note>('notes').listenable(),
+                  builder: (context, box, _) {
+                    var notes = box.values.toList()
+                      ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
                     if (_searchQuery.isNotEmpty) {
                       final query = _searchQuery.toLowerCase();

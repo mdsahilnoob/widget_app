@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../../core/models/class_session.dart';
-import '../../main.dart';
 
 class DailyClassesScreen extends StatelessWidget {
   const DailyClassesScreen({super.key});
@@ -51,17 +50,10 @@ class _DayScheduleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<ClassSession>>(
-      stream: isar.classSessions
-          .filter()
-          .dayOfWeekEqualTo(day)
-          .watch(fireImmediately: true),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final classes = snapshot.data ?? [];
+    return ValueListenableBuilder(
+      valueListenable: Hive.box<ClassSession>('class_sessions').listenable(),
+      builder: (context, box, _) {
+        final classes = box.values.where((c) => c.dayOfWeek == day).toList();
 
         if (classes.isEmpty) {
           return Center(

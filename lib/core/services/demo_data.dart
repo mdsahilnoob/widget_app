@@ -1,13 +1,16 @@
-import '../../main.dart';
+import 'package:hive_ce/hive.dart';
 import '../models/academic_event.dart';
 import '../models/class_session.dart';
 import '../models/note.dart';
 
 class DemoDataInitializer {
   static Future<void> initializeIfNeeded() async {
+    final classSessionsBox = Hive.box<ClassSession>('class_sessions');
+    final academicEventsBox = Hive.box<AcademicEvent>('academic_events');
+    final notesBox = Hive.box<Note>('notes');
+
     // Check if we already have data
-    final classCount = await isar.classSessions.count();
-    if (classCount > 0) return; // Already initialized
+    if (classSessionsBox.isNotEmpty) return; // Already initialized
 
     // Create demo data for a Computer Science student
     final sessions = [
@@ -124,11 +127,8 @@ class DemoDataInitializer {
         ..color = 0xFFFDE4EC, // Pink
     ];
 
-    // Transaction to insert all demo data
-    await isar.writeTxn(() async {
-      await isar.classSessions.putAll(sessions);
-      await isar.academicEvents.putAll(events);
-      await isar.notes.putAll(initialNotes);
-    });
+    await classSessionsBox.addAll(sessions);
+    await academicEventsBox.addAll(events);
+    await notesBox.addAll(initialNotes);
   }
 }

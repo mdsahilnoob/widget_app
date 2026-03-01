@@ -1,21 +1,25 @@
-import 'package:isar/isar.dart';
+import 'package:hive_ce/hive.dart';
 
 part 'academic_event.g.dart';
 
-@collection
-class AcademicEvent {
-  Id id = Isar.autoIncrement;
-
+@HiveType(typeId: 0)
+class AcademicEvent extends HiveObject {
+  @HiveField(0)
   late String title;
-  
+
+  @HiveField(1)
   late DateTime date;
-  
-  @enumerated
+
+  @HiveField(2)
   late EventType type;
 }
 
+@HiveType(typeId: 1)
 enum EventType {
+  @HiveField(0)
   exam,
+  @HiveField(1)
   holiday,
-  event
+  @HiveField(2)
+  event,
 }

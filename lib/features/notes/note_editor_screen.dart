@@ -1,7 +1,7 @@
+import 'package:hive_ce/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/models/note.dart';
-import '../../main.dart';
 
 class NoteEditorScreen extends StatefulWidget {
   final Note? note;
@@ -64,9 +64,17 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     noteToSave.color = _selectedColor;
     noteToSave.timestamp = DateTime.now();
 
-    await isar.writeTxn(() async {
-      await isar.notes.put(noteToSave);
-    });
+    final notesBox = Hive.box<Note>('notes');
+    if (widget.note != null) {
+      final key = widget.note!.key;
+      if (key != null) {
+        await notesBox.put(key, noteToSave);
+      } else {
+        await notesBox.add(noteToSave);
+      }
+    } else {
+      await notesBox.add(noteToSave);
+    }
 
     if (mounted) {
       Navigator.pop(context);
@@ -95,9 +103,11 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       );
 
       if (confirm == true) {
-        await isar.writeTxn(() async {
-          await isar.notes.delete(widget.note!.id);
-        });
+        final key = widget.note!.key;
+        if (key != null) {
+          final notesBox = Hive.box<Note>('notes');
+          await notesBox.delete(key);
+        }
         if (mounted) {
           Navigator.pop(context);
         }
