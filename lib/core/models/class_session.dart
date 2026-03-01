@@ -19,7 +19,6 @@ class ClassSession extends HiveObject {
   @HiveField(4)
   late DateTime endTime;
 
-  /// 1 = Monday, 2 = Tuesday, ..., 7 = Sunday
   @HiveField(5)
   late int dayOfWeek;
 }

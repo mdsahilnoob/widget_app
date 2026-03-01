@@ -18,14 +18,14 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   late int _selectedColor;
 
   final List<int> _availableColors = [
-    0xFFCBECE8, // Mint
-    0xFFFBE4C7, // Peach
-    0xFFFDE4EC, // Pink
-    0xFFD4EFEF, // Blueish
-    0xFFE4F5F4, // Light Mint
-    0xFFF0FDF4, // Light Green
-    0xFFFFF7ED, // Light Orange
-    0xFFF8FAFC, // Slate
+    0xFFCBECE8,
+    0xFFFBE4C7,
+    0xFFFDE4EC,
+    0xFFD4EFEF,
+    0xFFE4F5F4,
+    0xFFF0FDF4,
+    0xFFFFF7ED,
+    0xFFF8FAFC,
   ];
 
   @override
@@ -153,7 +153,6 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       ),
       body: Column(
         children: [
-          // Color selector
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -247,7 +246,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                         hintStyle: TextStyle(color: Colors.black26),
                       ),
                     ),
-                    const SizedBox(height: 100), // Reserve space for scrolling
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),

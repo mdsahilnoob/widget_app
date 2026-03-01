@@ -62,9 +62,7 @@ class AcademicCalendarScreen extends StatelessWidget {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              // TODO: Add Event
-            },
+            onPressed: () {},
             child: const Icon(Icons.add),
           ),
         );

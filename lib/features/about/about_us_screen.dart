@@ -99,9 +99,7 @@ class AboutUsScreen extends StatelessWidget {
                           fontSize: 12,
                         ),
                       ),
-                      const SizedBox(
-                        height: 140,
-                      ), // Extra padding for floating navbar
+                      const SizedBox(height: 140),
                     ],
                   ),
                 ),

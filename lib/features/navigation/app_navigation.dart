@@ -130,10 +130,9 @@ class _AppNavigationState extends State<AppNavigation> {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 600) {
-          // Mobile Layout
           return Scaffold(
-            extendBody: true, // Crucial for floating nav bar overlap
-            backgroundColor: const Color(0xFFE4F5F4), // Base fallback color
+            extendBody: true,
+            backgroundColor: const Color(0xFFE4F5F4),
             body: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               child: _screens[_selectedIndex],
@@ -141,7 +140,6 @@ class _AppNavigationState extends State<AppNavigation> {
             bottomNavigationBar: _buildCustomBottomBar(),
           );
         } else {
-          // Tablet/Desktop Layout
           return Scaffold(
             backgroundColor: const Color(0xFFE4F5F4),
             body: Row(

@@ -13,15 +13,12 @@ class OnboardingScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFD4EFEF), // Soft cyan/teal top
-              Color(0xFFF0FDF4), // Almost white
-            ],
+            colors: [Color(0xFFD4EFEF), Color(0xFFF0FDF4)],
             stops: [0.0, 0.6],
           ),
         ),
         child: SafeArea(
-          bottom: false, // Allow bottom to bleed
+          bottom: false,
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
@@ -41,7 +38,7 @@ class OnboardingScreen extends StatelessWidget {
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  // A stylized stack of books representation
+                                  //
                                   Container(
                                     width: constraints.maxWidth * 0.5,
                                     height: constraints.maxWidth * 0.5,

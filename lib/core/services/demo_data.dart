@@ -9,12 +9,9 @@ class DemoDataInitializer {
     final academicEventsBox = Hive.box<AcademicEvent>('academic_events');
     final notesBox = Hive.box<Note>('notes');
 
-    // Check if we already have data
-    if (classSessionsBox.isNotEmpty) return; // Already initialized
+    if (classSessionsBox.isNotEmpty) return;
 
-    // Create demo data for a Computer Science student
     final sessions = [
-      // Monday
       ClassSession()
         ..title = 'Data Structures & Algorithms'
         ..room = 'Lab 1 - Block A'
@@ -29,7 +26,6 @@ class DemoDataInitializer {
         ..startTime = DateTime(2025, 1, 1, 11, 30)
         ..endTime = DateTime(2025, 1, 1, 12, 30)
         ..dayOfWeek = 1,
-      // Tuesday
       ClassSession()
         ..title = 'Operating Systems'
         ..room = 'Room 202'
@@ -44,7 +40,6 @@ class DemoDataInitializer {
         ..startTime = DateTime(2025, 1, 2, 12, 0)
         ..endTime = DateTime(2025, 1, 2, 13, 0)
         ..dayOfWeek = 2,
-      // Wednesday
       ClassSession()
         ..title = 'Theory of Computation'
         ..room = 'Room 305'
@@ -59,7 +54,6 @@ class DemoDataInitializer {
         ..startTime = DateTime(2025, 1, 3, 11, 0)
         ..endTime = DateTime(2025, 1, 3, 12, 30)
         ..dayOfWeek = 3,
-      // Thursday
       ClassSession()
         ..title = 'Artificial Intelligence'
         ..room = 'Room 204'
@@ -74,7 +68,6 @@ class DemoDataInitializer {
         ..startTime = DateTime(2025, 1, 4, 13, 0)
         ..endTime = DateTime(2025, 1, 4, 15, 0)
         ..dayOfWeek = 4,
-      // Friday
       ClassSession()
         ..title = 'Operating Systems Lab'
         ..room = 'Lab 3'
@@ -112,19 +105,19 @@ class DemoDataInitializer {
         ..content =
             '1NF: Atomic values.\n2NF: 1NF + No partial dependency.\n3NF: 2NF + No transitive dependency.\nBCNF: Strict 3NF.'
         ..timestamp = DateTime.now()
-        ..color = 0xFFCBECE8, // Mint
+        ..color = 0xFFCBECE8,
       Note()
         ..title = 'Process Scheduling Algorithms'
         ..content =
             'FCFS, SJF, Round Robin (time quantum is critical for context switching overhead), Priority.'
         ..timestamp = DateTime.now()
-        ..color = 0xFFFBE4C7, // Pale Orange
+        ..color = 0xFFFBE4C7,
       Note()
         ..title = 'OSI Model Layers'
         ..content =
             '1. Physical\n2. Data Link\n3. Network\n4. Transport\n5. Session\n6. Presentation\n7. Application'
         ..timestamp = DateTime.now()
-        ..color = 0xFFFDE4EC, // Pink
+        ..color = 0xFFFDE4EC,
     ];
 
     await classSessionsBox.addAll(sessions);

@@ -100,7 +100,7 @@ class _TimetableHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(width: 40), // Balance
+          const SizedBox(width: 40),
           Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
@@ -216,7 +216,7 @@ class _WeekdayPicker extends StatelessWidget {
                         fontWeight: isSelected
                             ? FontWeight.bold
                             : FontWeight.w600,
-                        fontSize: 11, // Smaller font to fit 5 items
+                        fontSize: 11,
                       ),
                     ),
                   ),

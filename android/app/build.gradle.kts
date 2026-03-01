@@ -3,13 +3,13 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-// ── Load signing properties from android/key.properties ──────────────────────
-// The file is NOT committed to VCS (see android/.gitignore).
-// In CI the file is written by the GitHub Actions workflow before this runs.
+
+
+
 val keyPropertiesFile = rootProject.file("key.properties")
 val keyProperties = Properties()
 if (keyPropertiesFile.exists()) {
@@ -38,7 +38,7 @@ android {
         versionName = flutter.versionName
     }
 
-    // ── Signing configs ───────────────────────────────────────────────────────
+
     signingConfigs {
         if (keyPropertiesFile.exists()) {
             create("release") {
@@ -58,10 +58,10 @@ android {
             signingConfig = if (keyPropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
-                // Fallback to debug key locally when key.properties is absent.
+                
                 signingConfigs.getByName("debug")
             }
-            isMinifyEnabled  = false  // set true + add proguard rules when ready
+            isMinifyEnabled  = false  
             isShrinkResources = false
         }
     }

@@ -13,7 +13,6 @@ class Note extends HiveObject {
   @HiveField(2)
   late DateTime timestamp;
 
-  /// Stored as an integer (ARGB Hex value)
   @HiveField(3)
   late int color;
 }

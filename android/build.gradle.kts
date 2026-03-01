@@ -11,7 +11,7 @@ subprojects {
         if (project.hasProperty("android")) {
             val android = project.extensions.findByName("android")
             if (android != null) {
-                // 1. Fix: Missing Namespace Reflection
+                
                 try {
                     val androidClass = android::class.java
                     val getNamespace = androidClass.getMethod("getNamespace")
@@ -23,7 +23,7 @@ subprojects {
                     }
                 } catch (e: Exception) { }
 
-                // 2. Fix: Strip 'package' attribute from Manifest (Required for AGP 8.0+)
+                
                 tasks.matching { it.name.contains("process") && it.name.contains("Manifest") }.configureEach {
                     doFirst {
                         val manifestFile = file("${project.projectDir}/src/main/AndroidManifest.xml")
@@ -42,7 +42,7 @@ subprojects {
     }
 }
 
-// 3. Optimization: Build Directory Redirection
+
 val newBuildDir: Directory = rootProject.layout.buildDirectory
     .dir("../../build")
     .get()
@@ -54,7 +54,7 @@ subprojects {
     this.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 
-// 4. Ensure correct evaluation order
+
 subprojects {
     evaluationDependsOn(":app")
 }

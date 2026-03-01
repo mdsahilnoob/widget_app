@@ -15,14 +15,11 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
 
-  # State Management
   flutter_riverpod: ^2.6.1
 
-  # Local Storage & System
   shared_preferences: ^2.3.3
   path_provider: ^2.1.5
 
-  # UI & Utilities
   home_widget: ^0.9.0
   google_fonts: ^8.0.2
   intl: ^0.20.2
@@ -38,10 +35,8 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
   
-  # Build Tools (Downgraded to be compatible with Isar 3.1.0+1)
   build_runner: ^2.11.1
   hive_ce_generator: ^1.11.1
-  # Removed the analyzer ^11.0.0 line to solve the conflict
 
 flutter:
   uses-material-design: true

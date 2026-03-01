@@ -8,7 +8,7 @@ class DailyClassesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5, // Monday to Friday
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Daily Classes'),
@@ -25,17 +25,15 @@ class DailyClassesScreen extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            _DayScheduleView(day: 1), // Monday
-            _DayScheduleView(day: 2), // Tuesday
-            _DayScheduleView(day: 3), // Wednesday
-            _DayScheduleView(day: 4), // Thursday
-            _DayScheduleView(day: 5), // Friday
+            _DayScheduleView(day: 1),
+            _DayScheduleView(day: 2),
+            _DayScheduleView(day: 3),
+            _DayScheduleView(day: 4),
+            _DayScheduleView(day: 5),
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // TODO: Add Class Session
-          },
+          onPressed: () {},
           child: const Icon(Icons.add),
         ),
       ),
@@ -75,7 +73,7 @@ class _DayScheduleView extends StatelessWidget {
                 '${session.endTime.hour.toString().padLeft(2, '0')}:${session.endTime.minute.toString().padLeft(2, '0')}';
 
             return Card(
-              elevation: 2, // Material 3 Elevated Card style
+              elevation: 2,
               margin: const EdgeInsets.only(bottom: 16.0),
               child: ListTile(
                 contentPadding: const EdgeInsets.all(16.0),

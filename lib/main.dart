@@ -12,7 +12,6 @@ import 'features/onboarding/onboarding_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive DB
   await Hive.initFlutter();
   Hive.registerAdapter(ClassSessionAdapter());
   Hive.registerAdapter(NoteAdapter());
@@ -23,7 +22,6 @@ void main() async {
   await Hive.openBox<Note>('notes');
   await Hive.openBox<AcademicEvent>('academic_events');
 
-  // Initialize Demo Data
   await DemoDataInitializer.initializeIfNeeded();
 
   runApp(const UniversityTimetableApp());
@@ -39,28 +37,25 @@ class UniversityTimetableApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.outfitTextTheme(),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF0D9488), // Teal color
+          seedColor: const Color(0xFF0D9488),
           brightness: Brightness.light,
-          surface: Colors.transparent, // Allow gradient backgrounds
+          surface: Colors.transparent,
         ),
-        scaffoldBackgroundColor:
-            Colors.transparent, // Handled by gradient container in screens
+        scaffoldBackgroundColor: Colors.transparent,
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
         textTheme: GoogleFonts.outfitTextTheme(
           ThemeData(brightness: Brightness.dark).textTheme,
         ),
-        scaffoldBackgroundColor: const Color(
-          0xFF1E212B,
-        ), // True Black/Dark Theme
+        scaffoldBackgroundColor: const Color(0xFF1E212B),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF0D9488),
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
       ),
-      themeMode: ThemeMode.light, // Set light mode for the exact UX feel
+      themeMode: ThemeMode.light,
       home: const OnboardingScreen(),
     );
   }
